@@ -6,21 +6,22 @@ import json
 version = "0.0 - In developemnt"
 
 def main():
-    JsonDir = readJsonDir()
+    print(getWelcome())
+    jsonDir = readJsonDir()
 
     # If no valid JSON dir has been found, set one
-    if JsonDir == 1:
-        JsonDir = getJsonDir()
+    if jsonDir == 1:
+        jsonDir = getJsonDir()
 
-    startPrompt(JsonDir)
+    startPrompt(jsonDir)
 
 
 # Get the Json directory from file
 # Returns 1 on error, directory name on success
 def readJsonDir():
     # Creates the file if it does not exist already
-    with open("jsondir.txt", "a+") as JsonDirFile:
-        directory = JsonDir.readline()
+    with open("jsondir.txt", "a+") as jsonDirFile:
+        directory = jsonDirFile.readline()
 
         if checkDirValidity(directory):
             return 1
@@ -37,6 +38,8 @@ def getJsonDir():
     if checkDirValidity(directory):
         print("This path appears to be wrong.")
         directory = getJsonDir()
+
+    # TODO: Write the directory down into the allocated file
 
     return directory
 
@@ -56,31 +59,63 @@ def printVersion():
     print("Version: {0}".format(version))
 
 
-def getWelcomeBanner():
+def getWelcome():
     return "Welcome to Dellon's CDDA json browser!"
 
 
+def interpretCommand():
+    pass # TODO
+
+
 def startPrompt(JsonDir):
+    # json = loadJson()
     print("What would you like to do? Type 'help' for some options. ")
 
     while True:
         command = input("> ")
-        doAction, args = parseCommand(command)
+
+        if command is "q" or "quit":
+            break
+
+        doAction, args = interpretCommand(command)
         doAction(args)
 
 
 def printHelpMessage():
+    for e in commandHelp:
+        print("{0}: {1}".format(e, commandHelp[e]))
 
 
-def endPrompt():
-    print("Goodbye!")
-    break
+# Attempts to expand the abbreviation; if the abbreviation is not valid,
+# assumes command has been typed out in full and returns whatever was passed
+def expandAbbreviation(abbr):
+    try:
+        return abbreviations[abbr]
+    except:
+        return abbr
+
 
 commands = {
     "help" : printHelpMessage,
-    "quit" : endPrompt
 }
-
+abbreviations = {
+    "f" : "find",
+    "i" : "description",
+    "c" : "crafting",
+    "r" : "recipes",
+    "d" : "disassembly",
+    "j" : "json"
+}
+commandHelp = {
+    "help" : "Prints out this help message.",
+    "quit/q" : "Exits the program.",
+    "find/f" : "Searches for entry ids matching the argument.",
+    "description/i" : "Displays the description of the argument.",
+    "crafting/c" : "Displays information on how to craft specified item.",
+    "recipes/r" : "Displays recipes using specified item.",
+    "disassembly/d" : "Displays what the specified item disassembles to.",
+    "json/j" : "Display the raw json value of all values with attribute equal to second attribute."
+}
 
 if __name__ == "__main__":
     main()

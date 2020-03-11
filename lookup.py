@@ -87,11 +87,13 @@ def startPrompt(JsonDir):
 
 def endPrompt(_):
     exit(0)
+    print("Goodbye!")
 
 
 def printHelpMessage(_):
+    print("A list of commands:\n")
     for e in commandHelp:
-        print("{0}: {1}".format(e, commandHelp[e]))
+        print("{0}:  {1}".format(e, commandHelp[e]))
 
 
 def incorrectCommand(command):
@@ -121,12 +123,12 @@ abbreviations = {
     "q" : "quit"
 }
 commandHelp = {
-    "help" : "Prints out this help message.",
+    "help" : "  Prints out this help message.",
     "quit/q" : "Exits the program.",
     "find/f" : "Searches for entry ids matching the argument.",
     "description/i" : "Displays the description of the argument.",
-    "crafting/c" : "Displays information on how to craft specified item.",
-    "recipes/r" : "Displays recipes using specified item.",
+    "crafting/c" : "   Displays information on how to craft specified item.",
+    "recipes/r" : "    Displays recipes using specified item.",
     "disassembly/d" : "Displays what the specified item disassembles to.",
     "json/j" : "Display the raw json value of all values with attribute equal to second attribute."
 }

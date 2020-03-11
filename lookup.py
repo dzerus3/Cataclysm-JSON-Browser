@@ -78,8 +78,11 @@ def startPrompt(JsonDir):
     while True:
         command = input("> ")
 
-        doAction, args = interpretCommand(command)
-        doAction(args)
+        try:
+            doAction, args = interpretCommand(command)
+            doAction(args)
+        except:
+            incorrectCommand(command)
 
 
 def endPrompt(_):
@@ -89,6 +92,10 @@ def endPrompt(_):
 def printHelpMessage(_):
     for e in commandHelp:
         print("{0}: {1}".format(e, commandHelp[e]))
+
+
+def incorrectCommand(command):
+    print("Command not found: {0}".format(command))
 
 
 # Attempts to expand the abbreviation; if the abbreviation is not valid,

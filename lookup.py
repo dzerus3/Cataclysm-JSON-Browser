@@ -74,11 +74,12 @@ def startPrompt(JsonDir):
     while True:
         command = input("> ")
 
-        if command is "q" or "quit":
-            break
-
         doAction, args = interpretCommand(command)
         doAction(args)
+
+
+def endPrompt():
+    exit(0)
 
 
 def printHelpMessage():
@@ -97,6 +98,7 @@ def expandAbbreviation(abbr):
 
 commands = {
     "help" : printHelpMessage,
+    "quit" : endPrompt
 }
 abbreviations = {
     "f" : "find",

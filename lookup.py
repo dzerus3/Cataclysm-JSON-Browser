@@ -9,7 +9,7 @@ def main():
     print(getWelcome())
     #jsonDir = readJsonDir()
 
-    jsonDir = "~/workspace/Cataclysm-DDA/data/json"
+    jsonDir = "/home/sal/workspace/Cataclysm-DDA/data/json"
     # If no valid JSON dir has been found, set one
     if jsonDir == 1:
         jsonDir = getJsonDir()
@@ -100,7 +100,7 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
     try:
         # If the json is contained in a single file
         if jsonFile:
-            with open(jsonFile, "r") as openedJsonFile:
+            with open(jsonDir + "/" + jsonFile, "r") as openedJsonFile:
                 result.append(json.load(openedJsonFile))
 
 
@@ -113,9 +113,10 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
     except FileNotFoundError:
         if jsonFile:
             print("Failed to open file {0}. Some commands may be unavailable.".format(jsonFile))
+            print("Are you sure " + jsonDir + jsonFile + " is the right location?")
         else:
             print("Failed to open file {0}. Some commands may be unavailable.".format(f))
-        print("Are you sure " + jsonDir + " is the right location?")
+            print("Are you sure " + jsonDir + f + " is the right location?")
 
     return result
 

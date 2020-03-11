@@ -20,7 +20,7 @@ def main():
 # Returns 1 on error, directory name on success
 def readJsonDir():
     # Creates the file if it does not exist already
-    with open("jsondir.txt", "a+") as jsonDirFile:
+    with open("jsondir.txt", "r") as jsonDirFile:
         directory = jsonDirFile.readline()
 
         if checkDirValidity(directory):

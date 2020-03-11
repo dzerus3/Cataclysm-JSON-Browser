@@ -71,8 +71,41 @@ def interpretCommand(command):
     return commands[cmd], args
 
 
-def startPrompt(JsonDir):
-    # json = loadJson()
+def loadJson(jsonDir)
+    loadedJson = {}
+
+    # Items, vehicles, and vehicle parts loaded separately because they are across multiple files
+    loadedJson["items"]    = loadItems(jsonDir)
+    loadedJson["vehicles"] = loadVehicles(jsonDir)
+    loadedJson["parts"]    = loadParts(jsonDir)
+
+    loadedJson["bionics"]  = loadJsonFile(jsonDir, "bionics.json")
+    loadedJson["materials"]= loadJsonFile(jsonDir, "materials.json")
+    loadedJson["martialarts"]  = loadJsonFile(jsonDir, "martialarts.json")
+    loadedJson["mutations"]    = loadJsonFile(jsonDir, "mutations/mutations.json")
+    loadedJson["construction"] = loadJsonFile(jsonDir, "construction.json")
+
+    return loadedJson
+
+
+def loadItems(jsonDir):
+    pass
+
+
+def loadVehicles(jsonDir):
+    pass
+
+
+def loadParts(jsonDir):
+    pass
+
+
+def loadJsonFile(jsonDir, jsonFile):
+    pass
+
+
+def startPrompt(jsonDir):
+    loadedJson = loadJson()
     print("What would you like to do? Type 'help' for some options. ")
 
     while True:
@@ -83,6 +116,15 @@ def startPrompt(JsonDir):
             doAction(args)
         except NameError:
             incorrectCommand(command)
+
+
+# Attempts to expand the abbreviation; if the abbreviation is not valid,
+# assumes command has been typed out in full and returns whatever was passed
+def expandAbbreviation(abbr):
+    try:
+        return abbreviations[abbr]
+    except NameError:
+        return abbr
 
 
 def endPrompt(_):
@@ -99,13 +141,15 @@ def incorrectCommand(command):
     print("Command not found: {0}".format(command))
 
 
-# Attempts to expand the abbreviation; if the abbreviation is not valid,
-# assumes command has been typed out in full and returns whatever was passed
-def expandAbbreviation(abbr):
-    try:
-        return abbreviations[abbr]
-    except NameError:
-        return abbr
+# def getItem(name, prop):
+#     itemDir = items
+
+#     # Finds the json values assigned to that item
+#     item = findItem(name)
+
+
+# def findItem(name):
+
 
 
 commands = {
@@ -117,8 +161,9 @@ abbreviations = {
     "v" : "vehicle",
     "p" : "part",
     "b" : "bionic",
+    "m" : "materials",
     "ma": "martialart",
-    "m" : "mutation",
+    "mu": "mutation",
     "c" : "construction".
     "j" : "json",
     "q" : "quit"
@@ -129,12 +174,14 @@ commandHelp = {
     "item/i"   : "Outputs selected value of an item.",
     "vehicle/v": "Outputs selected value of a vehicle.",
     "part/p"   : "Outputs selected value of a vehicle part.",
-    "bionic/b" : "Outputs selected value of a bionic."
+    "bionic/b" : "Outputs selected value of a bionic.",
+    "materials/m"   : "Outputs selected value of a material.",
     "martialart/ma" : "Outputs selected value of a martial art.",
-    "mutation/m"    : "Outputs selected value of a mutation.",
+    "mutation/mu"   : "Outputs selected value of a mutation.",
     "construction/c": "Outputs selected value of a construction interaction.",
     "json/j"   : "Display the raw json value of all values with attribute equal to second attribute."
 }
+
 
 if __name__ == "__main__":
     main()

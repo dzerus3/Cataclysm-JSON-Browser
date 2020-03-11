@@ -75,33 +75,39 @@ def loadJson(jsonDir)
     loadedJson = {}
 
     # Items, vehicles, and vehicle parts loaded separately because they are across multiple files
-    loadedJson["items"]    = loadMultipleFiles(jsonDir, "items")
-    loadedJson["vehicles"] = loadMultipleFiles(jsonDir, "vehicles")
-    loadedJson["parts"]    = loadMultipleFiles(jsonDir, "vehicleparts")
+    loadedJson["items"]    = loadMultipleFiles(jsonDir, subDir="items")
+    loadedJson["vehicles"] = loadMultipleFiles(jsonDir, subDir="vehicles")
+    loadedJson["parts"]    = loadMultipleFiles(jsonDir, subDir="vehicleparts")
 
-    loadedJson["bionics"]  = loadJsonFile(jsonDir, "bionics.json")
-    loadedJson["materials"]= loadJsonFile(jsonDir, "materials.json")
-    loadedJson["martialarts"]  = loadJsonFile(jsonDir, "martialarts.json")
-    loadedJson["mutations"]    = loadJsonFile(jsonDir, "mutations/mutations.json")
-    loadedJson["construction"] = loadJsonFile(jsonDir, "construction.json")
+    loadedJson["bionics"]  = loadJsonFile(jsonDir, jsonFile="bionics.json")
+    loadedJson["materials"]= loadJsonFile(jsonDir, jsonFile="materials.json")
+    loadedJson["martialarts"]  = loadJsonFile(jsonDir, jsonFile="martialarts.json")
+    loadedJson["mutations"]    = loadJsonFile(jsonDir, jsonFile="mutations/mutations.json")
+    loadedJson["construction"] = loadJsonFile(jsonDir, jsonFile="construction.json")
 
     return loadedJson
 
 
-def loadMultipleFiles(jsonDir, subdir):
-    jsonFiles = glob.glob(jsonDir + "/" + subdir + "/**/*.json", recursive=True)
+def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
+    # If neither is specified or both are specified that's an error
+    if jsonFile == subDir:
+        raise TypeError("loadJsonFiles called with wrong number of args")
 
     result = []
 
-    for f in jsonFiles:
-        with open(f, r) as jsonFile:
+    if jsonFile == 1:
+        with open(f, "r") as jsonFile:
             result.append(json.load(jsonFile))
 
+
+    if subDir == 1:
+        jsonFiles = glob.glob(jsonDir + "/" + subdir + "/**/*.json", recursive=True)
+
+        for f in jsonFiles:
+            with open(f, "r") as jsonFile:
+                result.append(json.load(jsonFile))
+
     return result
-
-
-def loadJsonFile(jsonDir, jsonFile):
-    pass
 
 
 def startPrompt(jsonDir):

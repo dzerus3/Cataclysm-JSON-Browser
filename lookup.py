@@ -75,15 +75,15 @@ def loadJson(jsonDir):
     loadedJson = {}
 
     # Items, vehicles, and vehicle parts loaded separately because they are across multiple files
-    loadedJson["items"]    = loadMultipleFiles(jsonDir, subDir="items")
-    loadedJson["vehicles"] = loadMultipleFiles(jsonDir, subDir="vehicles")
-    loadedJson["parts"]    = loadMultipleFiles(jsonDir, subDir="vehicleparts")
+    loadedJson["items"]    = loadJsonFiles(jsonDir, subDir="items")
+    loadedJson["vehicles"] = loadJsonFiles(jsonDir, subDir="vehicles")
+    loadedJson["parts"]    = loadJsonFiles(jsonDir, subDir="vehicleparts")
 
-    loadedJson["bionics"]  = loadJsonFile(jsonDir, jsonFile="bionics.json")
-    loadedJson["materials"]= loadJsonFile(jsonDir, jsonFile="materials.json")
-    loadedJson["martialarts"]  = loadJsonFile(jsonDir, jsonFile="martialarts.json")
-    loadedJson["mutations"]    = loadJsonFile(jsonDir, jsonFile="mutations/mutations.json")
-    loadedJson["construction"] = loadJsonFile(jsonDir, jsonFile="construction.json")
+    loadedJson["bionics"]  = loadJsonFiles(jsonDir, jsonFile="bionics.json")
+    loadedJson["materials"]= loadJsonFiles(jsonDir, jsonFile="materials.json")
+    loadedJson["martialarts"]  = loadJsonFiles(jsonDir, jsonFile="martialarts.json")
+    loadedJson["mutations"]    = loadJsonFiles(jsonDir, jsonFile="mutations/mutations.json")
+    loadedJson["construction"] = loadJsonFiles(jsonDir, jsonFile="construction.json")
 
     return loadedJson
 
@@ -97,14 +97,13 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
 
     # If the json is contained in a single file
     if jsonFile:
-        with open(f, "r") as openedJsonFile:
+        with open(jsonFile, "r") as openedJsonFile:
             result.append(json.load(openedJsonFile))
 
 
     # If there is a subdirectory with more files (or even with more subdirectories)
     if subDir:
-        jsonFiles = glob.glob(jsonDir + "/" + subdir + "/**/*.json", recursive=True)
-
+        jsonFiles = glob.glob(jsonDir + "/" + subDir + "/**/*.json", recursive=True)
         for f in jsonFiles:
             with open(f, "r") as openedJsonFile:
                 result.append(json.load(openedJsonFile))
@@ -113,7 +112,7 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
 
 
 def startPrompt(jsonDir):
-    loadedJson = loadJson()
+    loadedJson = loadJson(jsonDir)
     print("What would you like to do? Type 'help' for some options. ")
 
     while True:

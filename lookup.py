@@ -1,7 +1,6 @@
 import re
 import json
 from os import listdir
-from sys import exit
 #import argparse TODO
 
 version = "0.0 - In developemnt"
@@ -82,12 +81,12 @@ def startPrompt(JsonDir):
         try:
             doAction, args = interpretCommand(command)
             doAction(args)
-        except:
+        except NameError:
             incorrectCommand(command)
 
 
 def endPrompt(_):
-    exit(0)
+    quit()
     print("Goodbye!")
 
 
@@ -106,7 +105,7 @@ def incorrectCommand(command):
 def expandAbbreviation(abbr):
     try:
         return abbreviations[abbr]
-    except:
+    except NameError:
         return abbr
 
 

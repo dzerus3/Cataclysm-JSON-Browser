@@ -110,7 +110,8 @@ abbreviations = {
     "c" : "crafting",
     "r" : "recipes",
     "d" : "disassembly",
-    "j" : "json"
+    "j" : "json",
+    "q" : "quit"
 }
 commandHelp = {
     "help" : "Prints out this help message.",

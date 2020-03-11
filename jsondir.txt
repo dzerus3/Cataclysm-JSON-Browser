@@ -1,4 +1,0 @@
-~/workspace/Cataclysm-DDA/data/json
-
-This is the file where the path of the json directory is written down.
-Feel free to write all over it, but do not touch the first line.

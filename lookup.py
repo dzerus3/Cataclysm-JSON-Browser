@@ -130,7 +130,7 @@ def startPrompt(jsonDir):
 
         try:
             doAction, args = interpretCommand(command)
-            doAction(args)
+            doAction(args, loadedJson)
         except NameError:
             incorrectCommand(command)
 

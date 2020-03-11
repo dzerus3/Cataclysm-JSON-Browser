@@ -7,8 +7,9 @@ version = "0.0 - In developemnt"
 
 def main():
     print(getWelcome())
-    jsonDir = readJsonDir()
+    #jsonDir = readJsonDir()
 
+    jsonDir = "~/workspace/Cataclysm-DDA/data/json"
     # If no valid JSON dir has been found, set one
     if jsonDir == 1:
         jsonDir = getJsonDir()
@@ -18,6 +19,7 @@ def main():
 
 # Get the Json directory from file
 # Returns 1 on error, directory name on success
+""" This function does not work and I fail to understand why; hardcoding it
 def readJsonDir():
     # Creates the file if it does not exist already
     with open("jsondir.txt", "r") as jsonDirFile:
@@ -25,9 +27,9 @@ def readJsonDir():
 
         if checkDirValidity(directory):
             return 1
-
-        return directory
-
+    print("Directory: " + directory)
+    return directory
+"""
 
 # Run when the program is started for the first time, or whenever the JSON dir is not found
 def getJsonDir():

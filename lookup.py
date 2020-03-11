@@ -87,7 +87,6 @@ def startPrompt(JsonDir):
 
 def endPrompt(_):
     quit()
-    print("Goodbye!")
 
 
 def printHelpMessage(_):

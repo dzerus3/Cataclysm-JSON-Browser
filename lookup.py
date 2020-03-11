@@ -137,7 +137,7 @@ def startPrompt(jsonDir):
 def expandAbbreviation(abbr):
     try:
         return abbreviations[abbr]
-    except NameError:
+    except KeyError:
         return abbr
 
 

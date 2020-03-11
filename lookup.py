@@ -75,9 +75,9 @@ def loadJson(jsonDir)
     loadedJson = {}
 
     # Items, vehicles, and vehicle parts loaded separately because they are across multiple files
-    loadedJson["items"]    = loadItems(jsonDir)
-    loadedJson["vehicles"] = loadVehicles(jsonDir)
-    loadedJson["parts"]    = loadParts(jsonDir)
+    loadedJson["items"]    = loadMultipleFiles(jsonDir, "items")
+    loadedJson["vehicles"] = loadMultipleFiles(jsonDir, "vehicles")
+    loadedJson["parts"]    = loadMultipleFiles(jsonDir, "vehicleparts")
 
     loadedJson["bionics"]  = loadJsonFile(jsonDir, "bionics.json")
     loadedJson["materials"]= loadJsonFile(jsonDir, "materials.json")
@@ -88,8 +88,8 @@ def loadJson(jsonDir)
     return loadedJson
 
 
-def loadItems(jsonDir):
-    jsonFiles = glob.glob(jsonDir + "/items/**/*.json", recursive=True)
+def loadMultipleFiles(jsonDir, subdir):
+    jsonFiles = glob.glob(jsonDir + "/" + subdir + "/**/*.json", recursive=True)
 
     result = []
 
@@ -98,14 +98,6 @@ def loadItems(jsonDir):
             result.append(json.load(jsonFile))
 
     return result
-
-
-def loadVehicles(jsonDir):
-    pass
-
-
-def loadParts(jsonDir):
-    pass
 
 
 def loadJsonFile(jsonDir, jsonFile):

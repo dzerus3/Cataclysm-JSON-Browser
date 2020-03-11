@@ -89,7 +89,15 @@ def loadJson(jsonDir)
 
 
 def loadItems(jsonDir):
-    pass
+    jsonFiles = glob.glob(jsonDir + "/items/**/*.json", recursive=True)
+
+    result = []
+
+    for f in jsonFiles:
+        with open(f, r) as jsonFile:
+            result.append(json.load(jsonFile))
+
+    return result
 
 
 def loadVehicles(jsonDir):

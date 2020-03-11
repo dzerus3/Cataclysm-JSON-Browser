@@ -1,7 +1,8 @@
 import re
-from os import listdir
-#import argparse TODO
 import json
+from os import listdir
+from sys import exit
+#import argparse TODO
 
 version = "0.0 - In developemnt"
 

@@ -95,18 +95,25 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
 
     result = []
 
-    # If the json is contained in a single file
-    if jsonFile:
-        with open(jsonFile, "r") as openedJsonFile:
-            result.append(json.load(openedJsonFile))
-
-
-    # If there is a subdirectory with more files (or even with more subdirectories)
-    if subDir:
-        jsonFiles = glob.glob(jsonDir + "/" + subDir + "/**/*.json", recursive=True)
-        for f in jsonFiles:
-            with open(f, "r") as openedJsonFile:
+    try:
+        # If the json is contained in a single file
+        if jsonFile:
+            with open(jsonFile, "r") as openedJsonFile:
                 result.append(json.load(openedJsonFile))
+
+
+        # If there is a subdirectory with more files (or even with more subdirectories)
+        if subDir:
+            jsonFiles = glob.glob(jsonDir + "/" + subDir + "/**/*.json", recursive=True)
+            for f in jsonFiles:
+                with open(f, "r") as openedJsonFile:
+                    result.append(json.load(openedJsonFile))
+    except FileNotFoundError:
+        if jsonFile:
+            print("Failed to open file {0}. Some commands may be unavailable.".format(jsonFile))
+        else:
+            print("Failed to open file {0}. Some commands may be unavailable.".format(f))
+        print("Are you sure " + jsonDir + " is the right location?")
 
     return result
 

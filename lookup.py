@@ -64,7 +64,7 @@ def getWelcome():
 
 
 def interpretCommand(command):
-    fullCommand = split(command)
+    fullCommand = command.split()
     cmd = expandAbbreviation(fullCommand[0])
     args = fullCommand[1:]
 
@@ -82,11 +82,11 @@ def startPrompt(JsonDir):
         doAction(args)
 
 
-def endPrompt():
+def endPrompt(_):
     exit(0)
 
 
-def printHelpMessage():
+def printHelpMessage(_):
     for e in commandHelp:
         print("{0}: {1}".format(e, commandHelp[e]))
 

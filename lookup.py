@@ -95,17 +95,19 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
 
     result = []
 
-    if jsonFile == 1:
-        with open(f, "r") as jsonFile:
-            result.append(json.load(jsonFile))
+    # If the json is contained in a single file
+    if jsonFile:
+        with open(f, "r") as openedJsonFile:
+            result.append(json.load(openedJsonFile))
 
 
-    if subDir == 1:
+    # If there is a subdirectory with more files (or even with more subdirectories)
+    if subDir:
         jsonFiles = glob.glob(jsonDir + "/" + subdir + "/**/*.json", recursive=True)
 
         for f in jsonFiles:
-            with open(f, "r") as jsonFile:
-                result.append(json.load(jsonFile))
+            with open(f, "r") as openedJsonFile:
+                result.append(json.load(openedJsonFile))
 
     return result
 

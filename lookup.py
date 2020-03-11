@@ -144,6 +144,22 @@ def expandAbbreviation(abbr):
         return abbr
 
 
+def findItem(args, loadedJson):
+    item = findJsonEntry(args[1], loadedJson)
+    if args[0] == "description":
+        pass
+
+    elif args[0] == "recipes":
+        pass
+
+
+def findJsonEntry(name, loadedJson):
+    for i in loadedJson:
+        if i["name"]["str"] == name:
+            return i
+    print("Could not find item {0}".format(name))
+
+
 def endPrompt(_):
     quit()
 

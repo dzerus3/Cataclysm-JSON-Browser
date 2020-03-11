@@ -113,23 +113,27 @@ commands = {
     "quit" : endPrompt
 }
 abbreviations = {
-    "f" : "find",
-    "i" : "description",
-    "c" : "crafting",
-    "r" : "recipes",
-    "d" : "disassembly",
+    "i" : "item",
+    "v" : "vehicle",
+    "p" : "part",
+    "b" : "bionic",
+    "ma": "martialart",
+    "m" : "mutation",
+    "c" : "construction".
     "j" : "json",
     "q" : "quit"
 }
 commandHelp = {
-    "help" : "  Prints out this help message.",
-    "quit/q" : "Exits the program.",
-    "find/f" : "Searches for entry ids matching the argument.",
-    "description/i" : "Displays the description of the argument.",
-    "crafting/c" : "   Displays information on how to craft specified item.",
-    "recipes/r" : "    Displays recipes using specified item.",
-    "disassembly/d" : "Displays what the specified item disassembles to.",
-    "json/j" : "Display the raw json value of all values with attribute equal to second attribute."
+    "help"     : "  Prints out this help message.",
+    "quit/q"   : "Exits the program.",
+    "item/i"   : "Outputs selected value of an item.",
+    "vehicle/v": "Outputs selected value of a vehicle.",
+    "part/p"   : "Outputs selected value of a vehicle part.",
+    "bionic/b" : "Outputs selected value of a bionic."
+    "martialart/ma" : "Outputs selected value of a martial art.",
+    "mutation/m"    : "Outputs selected value of a mutation.",
+    "construction/c": "Outputs selected value of a construction interaction.",
+    "json/j"   : "Display the raw json value of all values with attribute equal to second attribute."
 }
 
 if __name__ == "__main__":

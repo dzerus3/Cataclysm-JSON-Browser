@@ -63,8 +63,12 @@ def getWelcome():
     return "Welcome to Dellon's CDDA json browser!"
 
 
-def interpretCommand():
-    pass # TODO
+def interpretCommand(command):
+    fullCommand = split(command)
+    cmd = expandAbbreviation(fullCommand[0])
+    args = fullCommand[1:]
+
+    return commands[cmd], args
 
 
 def startPrompt(JsonDir):

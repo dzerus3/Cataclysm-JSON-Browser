@@ -47,7 +47,7 @@ def getJsonDir():
 def checkDirValidity(directory):
         # Checks whether the directory exists, and whether there are any .json files inside
         try:
-            if glob.glob(directory + "/*.json") = []:
+            if glob.glob(directory + "/*.json") == []:
                 return 1
         except:
             return 1
@@ -71,7 +71,7 @@ def interpretCommand(command):
     return commands[cmd], args
 
 
-def loadJson(jsonDir)
+def loadJson(jsonDir):
     loadedJson = {}
 
     # Items, vehicles, and vehicle parts loaded separately because they are across multiple files
@@ -172,7 +172,7 @@ abbreviations = {
     "m" : "materials",
     "ma": "martialart",
     "mu": "mutation",
-    "c" : "construction".
+    "c" : "construction",
     "j" : "json",
     "q" : "quit"
 }

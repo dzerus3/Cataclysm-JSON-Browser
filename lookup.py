@@ -1,6 +1,6 @@
 import re
 import json
-from os import listdir
+import glob
 #import argparse TODO
 
 version = "0.0 - In developemnt"
@@ -47,7 +47,7 @@ def getJsonDir():
 def checkDirValidity(directory):
         # Checks whether the directory exists, and whether there are any .json files inside
         try:
-            if not any(".json" in f for f in listdir(directory)):
+            if glob.glob(directory + "/*.json") = []:
                 return 1
         except:
             return 1

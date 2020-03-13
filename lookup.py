@@ -196,11 +196,11 @@ def findJsonEntry(name, loadedJson):
     print("Could not find item {0}".format(name))
 
 
-def endPrompt(_):
+def endPrompt(*argv):
     quit()
 
 
-def printHelpMessage(_):
+def printHelpMessage(*argv):
     print("A list of commands:\n")
     for e in commandHelp:
         print("{0}:  {1}".format(e, commandHelp[e]))

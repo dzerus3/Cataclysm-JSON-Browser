@@ -148,16 +148,16 @@ def expandAbbreviation(abbr):
 # This category attempts to imitate the item browser as much as possible in
 # terms of ui
 def findItem(args, loadedJson):
-    item = findJsonEntry(args[1], loadedJson)
+    if not checkArgsNumber(args, 2):
+        if args[0] == "description":
+            item = findJsonEntry(args[1], loadedJson)
 
+            readableItem = getItemDesc(item)
+            for i in readableItem:
+                print(readableItem[i])
 
-    if args[0] == "description":
-        readableItem = getItemDesc(item)
-        for i in readableItem:
-            print(readableItem[i])
-
-    elif args[0] == "recipes":
-        pass
+        elif args[0] == "recipes":
+            pass
 
 
 # Removes any extra information, handles missing information,
@@ -190,8 +190,9 @@ def getItemDesc(item):
 
 
 def findJsonEntry(name, loadedJson):
-    for i in loadedJson:
-        if i["name"]["str"] == name:
+    for i in loadedJson["items"]:
+        i["name"]["str"] = iname
+        if iname == name:
             return i
     print("Could not find item {0}".format(name))
 
@@ -209,6 +210,17 @@ def printHelpMessage(*argv):
 def incorrectCommand(command):
     print("Command not found: {0}".format(command))
 
+
+def checkArgsNumber(args, necessary):
+    try:
+        a = args[necessary - 1]
+
+        return 0
+    except IndexError:
+        print("Not enough arguments for command.", end=' ')
+        print("You need at least {0}".format(necessary))
+
+        return 1
 
 # def getItem(name, prop):
 #     itemDir = items

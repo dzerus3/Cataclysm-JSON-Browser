@@ -1,6 +1,7 @@
 import re
 import json
 import glob
+import struct
 #import argparse TODO
 
 version = "0.0 - In developemnt"
@@ -144,13 +145,48 @@ def expandAbbreviation(abbr):
         return abbr
 
 
+# This category attempts to imitate the item browser as much as possible in
+# terms of ui
 def findItem(args, loadedJson):
     item = findJsonEntry(args[1], loadedJson)
+
+
     if args[0] == "description":
-        pass
+        readableItem = getItemDesc(item)
+        for i in readableItem:
+            print(readableItem[i])
 
     elif args[0] == "recipes":
         pass
+
+
+# Removes any extra information, handles missing information,
+# and returns it in a dictionary
+def getItemDesc(item):
+    values = {
+        "name"  : 0,
+        "volume": 0,
+        "weight": 0,
+        "bash_protec": 0,
+        "cut_protec" : 0,
+        "tohit_bonus": 0,
+        "attackmoves": 0,
+        "category": 0,
+        "material": 0,
+        "price": 0,
+        "flags": 0,
+        "description": 0
+    }
+    # Name declared separately because it has 2 keys
+    values["name"] = item["name"]["str"]
+
+    for i in values:
+        try:
+            values[i] = str(item[i])
+        except:
+            values[i] = 0
+
+    return values
 
 
 def findJsonEntry(name, loadedJson):
@@ -187,7 +223,8 @@ def incorrectCommand(command):
 
 commands = {
     "help" : printHelpMessage,
-    "quit" : endPrompt
+    "quit" : endPrompt,
+    "item" : findItem
 }
 abbreviations = {
     "i" : "item",

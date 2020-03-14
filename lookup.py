@@ -135,7 +135,7 @@ def startPrompt(jsonDir):
         try:
             doAction, args = interpretCommand(command)
             doAction(args, loadedJson)
-        except NameError:
+        except (NameError, KeyError):
             incorrectCommand(command)
 
 
@@ -190,8 +190,7 @@ def getItemDesc(item):
         try:
             values[i] = str(item[i])
         except:
-            values[i] = 0
-
+            pass
     return values
 
 
@@ -235,7 +234,8 @@ def printHelpMessage(*argv):
 
 
 def incorrectCommand(command):
-    print("Command not found: {0}".format(command))
+    a = command.split(" ")
+    print("Command not found: {0}".format(a[0]))
 
 
 def checkArgsNumber(args, necessary):

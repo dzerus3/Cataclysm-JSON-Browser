@@ -171,17 +171,17 @@ def findItem(args, loadedJson):
 def getItemDesc(item):
     # A dictionary of all the values we might want
     values = {
-        "name",     "symbol",
-        "volume",   "weight",
-        "damage",   "to_hit",
-        "range",    "dispersion",
-        "loudness", "max_charges",
-        "bashing",  "encumbrance",
-        "cutting",  "use_action",
-        "pierce",   "charges_per_use",
-        "category", "qualities",
-        "warmth",   "price",
-        "flags",    "description"
+        "name": None,     "symbol": None,
+        "volume": None,   "weight": None,
+        "damage": None,   "to_hit": None,
+        "range": None,    "dispersion": None,
+        "loudness": None, "max_charges": None,
+        "bashing": None,  "encumbrance": None,
+        "cutting": None,  "use_action": None,
+        "pierce": None,   "charges_per_use": None,
+        "category": None, "qualities": None,
+        "warmth": None,   "price": None,
+        "flags": None,    "description": None
     }
     # Material is separate value because we have to get stuff from another file
     # itemMat = item["material"] # TODO
@@ -189,7 +189,7 @@ def getItemDesc(item):
     for i in values:
         try:
             values[i] = str(item[i])
-        except:
+        except KeyError:
             pass
     return values
 

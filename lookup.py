@@ -78,6 +78,7 @@ def loadJson(jsonDir):
     # Items, vehicles, and vehicle parts loaded separately because they are across multiple files
     loadedJson["items"]    = loadJsonFiles(jsonDir, subDir="items")
     loadedJson["vehicles"] = loadJsonFiles(jsonDir, subDir="vehicles")
+    loadedJson["recipes"]  = loadJsonFiles(jsonDir, subDir="recipes")
     loadedJson["parts"]    = loadJsonFiles(jsonDir, subDir="vehicleparts")
 
     loadedJson["bionics"]  = loadJsonFiles(jsonDir, jsonFile="bionics.json")
@@ -233,12 +234,10 @@ def incorrectCommand(command):
 def checkArgsNumber(args, necessary):
     try:
         a = args[necessary - 1]
-
         return 0
     except IndexError:
         print("Not enough arguments for command.", end=' ')
         print("You need at least {0}".format(necessary))
-
         return 1
 
 # def getItem(name, prop):

@@ -158,6 +158,8 @@ def findItem(args, loadedJson):
             readableItem = getItemDesc(item)
             for i in readableItem:
                 # If the value was not set
+                if not readableItem[i]:
+                    continue
                 print(i + ": " + readableItem[i])
 
         elif args[0] == "recipes":
@@ -214,10 +216,6 @@ def findJsonEntry(name, loadedJson):
                     pass
 
                 if sub["name"] == name:
-                    return sub
-            else:
-                # Don't know if I should be doing this yet
-                if sub.get("id") == name:
                     return sub
     
     print("Could not find item {0}".format(name))

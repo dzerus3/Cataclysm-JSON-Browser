@@ -193,10 +193,28 @@ def getItemDesc(item):
 
 
 def findJsonEntry(name, loadedJson):
+    name = name.lower()
     for i in loadedJson["items"]:
-        i["name"]["str"] = name
-        if iname == name:
-            return i
+            # I don't understand why, but some items have a name defined as name:str:<item name>
+            # some have it defined as name:<item name> and some only have an id
+            # so I have to handle all three cases and it's ugly
+        for sub in i:
+            # If we have a name attribute...
+            if "name" in sub:
+                itemname = sub["name"]
+
+                # If that name has an str attribute...
+                if "str" in itemname:
+                    if sub["name"]["str"] == name:
+                      return sub
+                      
+                if sub["name"] == name:
+                    return sub
+            else:
+                # Don't know if I should be doing this yet
+                if sub["id"] == name:
+                    return sub
+    
     print("Could not find item {0}".format(name))
 
 

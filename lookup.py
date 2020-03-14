@@ -157,7 +157,7 @@ def findItem(args, loadedJson):
             item = findJsonEntry(itemName, loadedJson)
 
             readableItem = getItemDesc(item)
-            for i in readableItem:
+            for i in readableItem: #TODO: Make the ui prettier
                 # If the value was not set
                 if not readableItem[i]:
                     continue
@@ -165,7 +165,7 @@ def findItem(args, loadedJson):
 
         elif args[0] == "recipes":
             pass
-        else: 
+        else:
             print("Cannot find item's {0}".format(args[0]))
 
 
@@ -173,7 +173,7 @@ def findItem(args, loadedJson):
 # and returns it in a dictionary
 def getItemDesc(item):
     # A dictionary of all the values we might want
-    values = {
+    """values = {
         "name": None,     "symbol": None,
         "volume": None,   "weight": None,
         "damage": None,   "to_hit": None,
@@ -185,15 +185,15 @@ def getItemDesc(item):
         "category": None, "qualities": None,
         "warmth": None,   "price": None,
         "flags": None,    "description": None
-    }
+    }"""
+    values = {}
+    ignoredValues = ["id", "color", "type", "//", "//2"] # TODO Add option to display these; probably with arguments
     # Material is separate value because we have to get stuff from another file
     # itemMat = item["material"] # TODO
 
-    for i in values:
-        try:
+    for i in item:
+        if i not in ignoredValues:
             values[i] = str(item[i])
-        except KeyError:
-            pass
     return values
 
 
@@ -218,7 +218,7 @@ def findJsonEntry(name, loadedJson):
 
                 if sub["name"] == name:
                     return sub
-    
+
     print("Could not find item {0}".format(name))
 
 

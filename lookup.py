@@ -157,6 +157,7 @@ def findItem(args, loadedJson):
 
             readableItem = getItemDesc(item)
             for i in readableItem:
+                # If the va;ue was not set
                 print(i + ": " + readableItem[i])
 
         elif args[0] == "recipes":
@@ -170,18 +171,18 @@ def findItem(args, loadedJson):
 def getItemDesc(item):
     # A dictionary of all the values we might want
     values = {
-        "name":  "",    "symbol":  "",
-        "volume":"",    "weight":  "",
-        "damage":"",    "to_hit":  "",
-        "range": "",    "dispersion": "",
-        "loudness":"",  "max_charges": "",
-        "bashing": "",  "encumbrance": "", # TODO: Get the armor values
-        "cutting": "",  "use_action": "",  # of the items from materials.json
-        "pierce": "",   "charges_per_use": "",
-        "category": "", "cut_protec": "",
-        "material": "", "qualities": "",
-        "warmth": "",   "price":  "",
-        "flags":  "",   "description": ""
+        "name",    "symbol",
+        "volume",    "weight",
+        "damage",    "to_hit",
+        "range",    "dispersion",
+        "loudness",  "max_charges",
+        "bashing",  "encumbrance", # TODO: Get the armor values
+        "cutting",  "use_action",  # of the items from materials.json
+        "pierce",   "charges_per_use",
+        "category", "cut_protec",
+        "material", "qualities",
+        "warmth",   "price",
+        "flags",   "description"
     }
     # Name declared separately because it has 2 keys
     values["name"] = item["name"]["str"]

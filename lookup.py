@@ -200,19 +200,22 @@ def findJsonEntry(name, loadedJson):
             # so I have to handle all three cases and it's ugly
         for sub in i:
             # If we have a name attribute...
-            if "name" in sub:
+            if sub.get("name"):
                 itemname = sub["name"]
 
                 # If that name has an str attribute...
-                if "str" in itemname:
-                    if sub["name"]["str"] == name:
-                      return sub
-                      
+                try:
+                    if itemname.get("str"):
+                        if sub["name"]["str"] == name:
+                            return sub
+                except AttributeError:
+                    pass
+
                 if sub["name"] == name:
                     return sub
             else:
                 # Don't know if I should be doing this yet
-                if sub["id"] == name:
+                if sub.get("id") == name:
                     return sub
     
     print("Could not find item {0}".format(name))

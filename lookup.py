@@ -152,8 +152,11 @@ def expandAbbreviation(abbr):
 # terms of ui
 def findItem(args, loadedJson):
     if not checkArgsNumber(args, 2):
+        # Required to make multi-word names work
+        itemName = ' '.join(args[1:])
+
         if args[0] == "description":
-            item = findJsonEntry(args[1], loadedJson)
+            item = findJsonEntry(itemName, loadedJson)
 
             readableItem = getItemDesc(item)
             for i in readableItem:

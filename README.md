@@ -39,7 +39,7 @@ To find the description for a rag:
 
 `> item description rag`
 
-To find recipes with a rag in it:
+To find recipes using a rag:
 
 `> i recipes rag`
 

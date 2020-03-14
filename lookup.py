@@ -163,19 +163,20 @@ def findItem(args, loadedJson):
 # Removes any extra information, handles missing information,
 # and returns it in a dictionary
 def getItemDesc(item):
+    # A dictionary of all the values we might want
     values = {
-        "name"  : 0,
-        "volume": 0,
-        "weight": 0,
-        "bash_protec": 0,
-        "cut_protec" : 0,
-        "tohit_bonus": 0,
-        "attackmoves": 0,
-        "category": 0,
-        "material": 0,
-        "price": 0,
-        "flags": 0,
-        "description": 0
+        "name":  0,    "symbol":  0,
+        "volume":0,    "weight":  0,
+        "damage":0,    "to_hit":  0,
+        "range": 0,    "dispersion": 0,
+        "loudness":0,  "max_charges": 0,
+        "bashing": 0,  "encumbrance": 0,
+        "cutting": 2,  "use_action": 0,
+        "pierce": 5,   "charges_per_use":0,
+        "category": 0, "cut_protec": 0,
+        "material": 0, "qualities": 0,
+        "warmth": 0,   "price":  0,
+        "flags":  0,   "description": 0
     }
     # Name declared separately because it has 2 keys
     values["name"] = item["name"]["str"]

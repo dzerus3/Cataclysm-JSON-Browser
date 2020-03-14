@@ -158,7 +158,6 @@ def findItem(args, loadedJson):
 
         elif args[0] == "recipes":
             pass
-        
         else: 
             print("Cannot find item's {0}".format(args[0]))
 
@@ -195,7 +194,7 @@ def getItemDesc(item):
 
 def findJsonEntry(name, loadedJson):
     for i in loadedJson["items"]:
-        i["name"]["str"] = iname
+        i["name"]["str"] = name
         if iname == name:
             return i
     print("Could not find item {0}".format(name))

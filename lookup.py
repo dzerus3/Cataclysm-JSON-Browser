@@ -158,6 +158,9 @@ def findItem(args, loadedJson):
 
         elif args[0] == "recipes":
             pass
+        
+        else: 
+            print("Cannot find item's {0}".format(args[0]))
 
 
 # Removes any extra information, handles missing information,

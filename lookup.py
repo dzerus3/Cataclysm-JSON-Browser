@@ -1,7 +1,5 @@
-import re
 import json
 import glob
-import struct
 #import argparse TODO
 
 version = "0.0 - In developemnt"

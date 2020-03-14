@@ -174,7 +174,7 @@ def findItem(args, loadedJson):
 def getItemDesc(item):
     values = {}
     # All the values we do not want to see
-    ignoredValues = ["id", "color", "type", "//", "//2"] # TODO Add option to display these; probably with arguments
+    ignoredValues = ["id", "color", "type", "//", "//2", "use_action"] # TODO Add option to display these; probably with arguments
     # Material is separate value because we have to get stuff from another file
     # itemMat = item["material"] # TODO
 

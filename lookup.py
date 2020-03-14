@@ -99,11 +99,11 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
     result = []
 
     try:
+        # TODO: Rewrite this without conditionals, ie using a list
         # If the json is contained in a single file
         if jsonFile:
             with open(jsonDir + "/" + jsonFile, "r") as openedJsonFile:
                 result.append(json.load(openedJsonFile))
-
 
         # If there is a subdirectory with more files (or even with more subdirectories)
         if subDir:
@@ -111,6 +111,8 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
             for f in jsonFiles:
                 with open(f, "r") as openedJsonFile:
                     result.append(json.load(openedJsonFile))
+
+    # In the improbable event one of the files is missing, or wrong directory got through the checks
     except FileNotFoundError:
         if jsonFile:
             print("Failed to open file {0}. Some commands may be unavailable.".format(jsonFile))
@@ -122,6 +124,7 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
     return result
 
 
+# This is the command prompt the user interacts with
 def startPrompt(jsonDir):
     loadedJson = loadJson(jsonDir)
     print("What would you like to do? Type 'help' for some options. ")
@@ -172,8 +175,8 @@ def getItemDesc(item):
         "damage":0,    "to_hit":  0,
         "range": 0,    "dispersion": 0,
         "loudness":0,  "max_charges": 0,
-        "bashing": 0,  "encumbrance": 0,
-        "cutting": 2,  "use_action": 0,
+        "bashing": 0,  "encumbrance": 0, # TODO: Get the armor values
+        "cutting": 2,  "use_action": 0,  # of the items from materials.json
         "pierce": 5,   "charges_per_use":0,
         "category": 0, "cut_protec": 0,
         "material": 0, "qualities": 0,
@@ -196,8 +199,8 @@ def findJsonEntry(name, loadedJson):
     name = name.lower()
     for i in loadedJson["items"]:
             # I don't understand why, but some items have a name defined as name:str:<item name>
-            # some have it defined as name:<item name> and some only have an id
-            # so I have to handle all three cases and it's ugly
+            # some have it defined as name:<item name> some only have an id,
+            # and some have no id at all so I have to handle all four cases and it's ugly
         for sub in i:
             # If we have a name attribute...
             if sub.get("name"):

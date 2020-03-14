@@ -161,7 +161,7 @@ def findItem(args, loadedJson):
                 # If the value was not set
                 if not readableItem[i]:
                     continue
-                print(i + ": " + readableItem[i])
+                print(prettifyString(i) + ": " + prettifyString(readableItem[i]))
 
         elif args[0] == "recipes":
             pass
@@ -207,6 +207,12 @@ def findJsonEntry(name, loadedJson):
                     return sub
 
     print("Could not find item {0}".format(name))
+
+
+def prettifyString(string):
+    string = string.capitalize()
+    string = string.replace("_", " ")
+    return string
 
 
 def endPrompt(*argv):

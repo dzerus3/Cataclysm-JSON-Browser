@@ -172,21 +172,8 @@ def findItem(args, loadedJson):
 # Removes any extra information, handles missing information,
 # and returns it in a dictionary
 def getItemDesc(item):
-    # A dictionary of all the values we might want
-    """values = {
-        "name": None,     "symbol": None,
-        "volume": None,   "weight": None,
-        "damage": None,   "to_hit": None,
-        "range": None,    "dispersion": None,
-        "loudness": None, "max_charges": None,
-        "bashing": None,  "encumbrance": None,
-        "cutting": None,  "use_action": None,
-        "pierce": None,   "charges_per_use": None,
-        "category": None, "qualities": None,
-        "warmth": None,   "price": None,
-        "flags": None,    "description": None
-    }"""
     values = {}
+    # All the values we do not want to see
     ignoredValues = ["id", "color", "type", "//", "//2"] # TODO Add option to display these; probably with arguments
     # Material is separate value because we have to get stuff from another file
     # itemMat = item["material"] # TODO
@@ -202,7 +189,7 @@ def findJsonEntry(name, loadedJson):
     for i in loadedJson["items"]:
             # I don't understand why, but some items have a name defined as name:str:<item name>
             # some have it defined as name:<item name> some only have an id,
-            # and some have no id at all so I have to handle all four cases and it's ugly
+            # and some have no id at all so I have to handle all cases and it's ugly
         for sub in i:
             # If we have a name attribute...
             if sub.get("name"):

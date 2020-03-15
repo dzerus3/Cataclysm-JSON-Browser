@@ -187,14 +187,14 @@ def outputCraftingRecipes(itemName, loadedJson):
 # This json reading thing sure is something
 # the name of the component is stored in a dictionary (json categories)
 # of lists (json files) of dictionaries (the json itself) of lists of lists
-# (the components) of lists (the number of components and name) 
+# (the components) of lists (the number of components and name)
 def findRecipeEntries(itemName, loadedJson):
     matchingRecipes = []
 
     for recipes in loadedJson["recipes"]:
         for recipe in recipes:
             if recipe.get("components"):
-                for components in recipe["components"]:  
+                for components in recipe["components"]:
                     componentName = components[0][0]
                     if componentName == itemName:
                         matchingRecipes.append(recipe)
@@ -222,26 +222,28 @@ def getItemDesc(item):
 def findItemEntry(name, loadedJson):
     name = name.lower()
     for i in loadedJson["items"]:
-            # I don't understand why, but some items have a name defined as name:str:<item name>
-            # some have it defined as name:<item name> some only have an id,
-            # and some have no id at all so I have to handle all cases and it's ugly
         for sub in i:
-            # If we have a name attribute...
-            if sub.get("name"):
-                itemname = sub["name"]
-
-                # If that name has an str attribute...
-                try:
-                    if itemname.get("str"):
-                        if sub["name"]["str"] == name:
-                            return sub
-                except AttributeError:
-                    pass
-
-                if sub["name"] == name:
-                    return sub
+            subName = getItemName(sub)
+            if subName == name:
+                return sub
 
     print("Could not find item {0}".format(name))
+
+# I don't understand why, but some items have a name defined as name:str:<item name>
+# some have it defined as name:<item name> some only have an id,
+# and some have no id at all so I have to handle all cases and it's ugly
+def getItemName(item):
+    # If we have a name attribute...
+    if item.get("name"):
+        itemname = item["name"]
+
+        # If that name has an str attribute...
+        try:
+            if itemname.get("str"):
+                itemname = item["name"]["str"]
+        except AttributeError:
+            pass
+        return itemname
 
 
 def prettifyString(string):

@@ -180,8 +180,10 @@ def outputItemDesc(itemName, loadedJson):
 
 def outputCraftingRecipes(itemName, loadedJson):
     recipes = findRecipeEntries(itemName, loadedJson)
-    for i in recipes:
-        print(i)
+    for r in recipes:
+        item = findItemByID(r["result"], loadedJson)
+        name = getItemName(item)
+        print(name)
 
 
 # This json reading thing sure is something
@@ -227,11 +229,14 @@ def findItemEntry(name, loadedJson):
     print("Could not find item {0}".format(name))
 
 
-def findItemById(iden, loadedJson):
+def findItemByID(iden, loadedJson):
     iden = iden.lower()
     for i in loadedJson["items"]:
         for sub in i:
-            subName = sub["id"]
+            try:
+                subName = sub["id"]
+            except KeyError:
+                continue
             if subName == iden:
                 return sub
 

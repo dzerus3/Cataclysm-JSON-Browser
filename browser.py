@@ -180,10 +180,16 @@ def outputItemDesc(itemName, loadedJson):
 
 def outputCraftingRecipes(itemName, loadedJson):
     recipes = findRecipeEntries(itemName, loadedJson)
+    counter = 1
     for r in recipes:
         item = findItemByID(r["result"], loadedJson)
+
         name = getItemName(item)
-        print(name)
+        name = setStringLength(name)
+
+        counterStr = setStringLength(str(counter), 3)
+        print(str(counter) + ". " + prettifyString(name))
+        counter+=1
 
 
 # This json reading thing sure is something
@@ -263,6 +269,31 @@ def getItemName(item):
 def prettifyString(string):
     string = string.capitalize()
     string = string.replace("_", " ")
+    return string
+
+
+def setStringLength(string, length=20):
+    changedString = shortenString(string, length)
+    changedString = padString(changedString, length)
+
+    return changedString
+
+
+def shortenString(string, length=20):
+    strlen = len(string)
+    if strlen > length:
+        string = string[:17]
+        string+="..."
+
+    return string
+
+
+# Pads string with spaces so it is easier to pretty-print
+def padString(string, length=20):
+    strlen = len(string)
+    if strlen < length:
+        padNum = length - len(string)
+        string += " " * padNum
     return string
 
 

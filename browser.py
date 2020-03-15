@@ -178,18 +178,42 @@ def outputItemDesc(itemName, loadedJson):
         print(prettifyString(i) + ": " + prettifyString(readableItem[i]))
 
 
+# I really cannot find a way to print efficiently hundreds of recipes in a terminal
 def outputCraftingRecipes(itemName, loadedJson):
     recipes = findRecipeEntries(itemName, loadedJson)
     counter = 1
-    for r in recipes:
-        item = findItemByID(r["result"], loadedJson)
 
-        name = getItemName(item)
-        name = setStringLength(name)
+    # Items with more than 25 recipes (i.e. rag) become almost unreadable
+    # This conditional tries to alleviate that 
+    # TODO: Make this prettier
+    recipLen = len(recipes)
+    if recipLen > 25:
+        for r in recipes:
+            item = findItemByID(r["result"], loadedJson) 
 
-        counterStr = setStringLength(str(counter), 3)
-        print(str(counter) + ". " + prettifyString(name))
-        counter+=1
+            if item == None:
+                # TODO: Investigate results of rock item
+                # Without this conditional
+                continue
+
+            name = getItemName(item)
+            name = setStringLength(name)
+
+            counterStr = setStringLength(str(counter), 3) # TODO: Make this line work
+            
+            print(str(counter) + ". " + prettifyString(name))
+            counter+=1
+    else:
+        for r in recipes:
+            item = findItemByID(r["result"], loadedJson)
+            
+            if item == None:
+                continue
+
+            name = getItemName(item)
+            print(str(counter) + ". " + prettifyString(name))
+            counter+=1
+    
 
 
 # This json reading thing sure is something
@@ -246,24 +270,23 @@ def findItemByID(iden, loadedJson):
             if subName == iden:
                 return sub
 
-    print("Could not find item {0}".format(iden))
-
 
 # I don't understand why, but some items have a name defined as name:str:<item name>
 # some have it defined as name:<item name> some only have an id,
 # and some have no id at all so I have to handle all cases and it's ugly
 def getItemName(item):
     # If we have a name attribute...
-    if item.get("name"):
-        itemname = item["name"]
+    try:
+        if item.get("name"):
+            itemname = item["name"]
 
-        # If that name has an str attribute...
-        try:
+            # If that name has an str attribute...
             if itemname.get("str"):
                 itemname = item["name"]["str"]
-        except AttributeError:
-            pass
-        return itemname
+    except AttributeError:
+        pass
+    
+    return itemname
 
 
 def prettifyString(string):

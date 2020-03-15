@@ -133,9 +133,10 @@ def startPrompt(jsonDir):
 
         try:
             doAction, args = interpretCommand(command)
-            doAction(args, loadedJson)
         except (NameError, KeyError):
             incorrectCommand(command)
+        doAction(args, loadedJson)
+
 
 
 # Attempts to expand the abbreviation; if the abbreviation is not valid,

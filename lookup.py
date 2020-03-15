@@ -244,16 +244,6 @@ def checkArgsNumber(args, necessary):
         print("You need at least {0}".format(necessary))
         return 1
 
-# def getItem(name, prop):
-#     itemDir = items
-
-#     # Finds the json values assigned to that item
-#     item = findItem(name)
-
-
-# def findItem(name):
-
-
 
 commands = {
     "help" : printHelpMessage,

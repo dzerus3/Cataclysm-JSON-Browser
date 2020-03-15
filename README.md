@@ -35,23 +35,21 @@ This program has been created as a sort of alternative for the online item brows
 ---
 
 ## Example
-> To find the description for a rag:
-`item description rag`
+To find the description for a rag:
 
-> To find recipes with a rag in it:
-`i recipes rag`
+`> item description rag`
 
-> To find the effects of the fleet footed mutation:
-`mutation fleet footed`
+To find recipes using a rag:
 
----
+`> i recipes rag`
 
-## Installation
+To find the effects of the fleet footed mutation:
 
+`> mutation fleet footed`
 
 ---
 
-## Donations (Optional)
+## Donations
 I really don't deserve it.
 
 ---

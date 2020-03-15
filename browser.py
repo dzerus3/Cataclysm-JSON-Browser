@@ -157,7 +157,7 @@ def findItem(args, loadedJson):
         if args[0] == "description":
             outputItemDesc(itemName, loadedJson)
         elif args[0] == "recipes":
-            pass
+            outputCraftingRecipes(itemName, loadedJson)
         elif args[0] == "craft":
             pass
         elif args[0] == "disassembly":
@@ -167,7 +167,7 @@ def findItem(args, loadedJson):
 
 
 def outputItemDesc(itemName, loadedJson):
-    item = findJsonEntry(itemName, loadedJson)
+    item = findItemEntry(itemName, loadedJson)
 
     readableItem = getItemDesc(item)
     for i in readableItem: #TODO: Make the ui prettier
@@ -175,6 +175,31 @@ def outputItemDesc(itemName, loadedJson):
         if not readableItem[i]:
             continue
         print(prettifyString(i) + ": " + prettifyString(readableItem[i]))
+
+
+def outputCraftingRecipes(itemName, loadedJson):
+    recipes = findRecipeEntries(itemName, loadedJson)
+    for i in recipes:
+        print(i)
+
+
+# This json reading thing sure is something
+# the name of the component is stored in a dictionary (json categories)
+# of lists (json files) of dictionaries (the json itself) of lists of lists
+# (the components) of lists (the number of components and name) 
+def findRecipeEntries(itemName, loadedJson):
+    matchingRecipes = []
+
+    for recipes in loadedJson["recipes"]:
+        for recipe in recipes:
+            for components in recipe["components"]:  
+                for component in components[0]:
+                    if component == itemName:
+                        matchingRecipes.append(recipe)
+    return matchingRecipes
+
+
+
 
 
 # Removes any extra information, handles missing information,
@@ -192,7 +217,7 @@ def getItemDesc(item):
     return values
 
 
-def findJsonEntry(name, loadedJson):
+def findItemEntry(name, loadedJson):
     name = name.lower()
     for i in loadedJson["items"]:
             # I don't understand why, but some items have a name defined as name:str:<item name>

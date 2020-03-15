@@ -179,6 +179,7 @@ def outputItemDesc(itemName, loadedJson):
 
 
 # I really cannot find a way to print efficiently hundreds of recipes in a terminal
+# TODO: As of right now, this does not output all crafting recipes
 def outputCraftingRecipes(itemName, loadedJson):
     recipes = findRecipeEntries(itemName, loadedJson)
     counter = 1
@@ -275,8 +276,10 @@ def findItemByID(iden, loadedJson):
 # some have it defined as name:<item name> some only have an id,
 # and some have no id at all so I have to handle all cases and it's ugly
 def getItemName(item):
-    # If we have a name attribute...
+    # Note: this definition has to be here, else some entries cause a crash
+    itemname = ""
     try:
+        # If we have a name attribute...
         if item.get("name"):
             itemname = item["name"]
 

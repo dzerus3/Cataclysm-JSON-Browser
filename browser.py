@@ -194,9 +194,9 @@ def findRecipeEntries(itemName, loadedJson):
     for recipes in loadedJson["recipes"]:
         for recipe in recipes:
             for components in recipe["components"]:  
-                for component in components[0]:
-                    if component == itemName:
-                        matchingRecipes.append(recipe)
+                componentName = components[0][0]
+                if componentName == itemName:
+                    matchingRecipes.append(recipe)
     return matchingRecipes
 
 

@@ -201,9 +201,6 @@ def findRecipeEntries(itemName, loadedJson):
     return matchingRecipes
 
 
-
-
-
 # Removes any extra information, handles missing information,
 # and returns it in a dictionary
 def getItemDesc(item):
@@ -228,6 +225,18 @@ def findItemEntry(name, loadedJson):
                 return sub
 
     print("Could not find item {0}".format(name))
+
+
+def findItemById(iden, loadedJson):
+    iden = iden.lower()
+    for i in loadedJson["items"]:
+        for sub in i:
+            subName = sub["id"]
+            if subName == iden:
+                return sub
+
+    print("Could not find item {0}".format(iden))
+
 
 # I don't understand why, but some items have a name defined as name:str:<item name>
 # some have it defined as name:<item name> some only have an id,

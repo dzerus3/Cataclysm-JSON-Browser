@@ -155,15 +155,7 @@ def findItem(args, loadedJson):
         itemName = ' '.join(args[1:])
 
         if args[0] == "description":
-            item = findJsonEntry(itemName, loadedJson)
-
-            readableItem = getItemDesc(item)
-            for i in readableItem: #TODO: Make the ui prettier
-                # If the value was not set
-                if not readableItem[i]:
-                    continue
-                print(prettifyString(i) + ": " + prettifyString(readableItem[i]))
-
+            outputItemDesc(itemName, loadedJson)
         elif args[0] == "recipes":
             pass
         elif args[0] == "craft":
@@ -172,6 +164,17 @@ def findItem(args, loadedJson):
             pass
         else:
             print("Cannot find item's {0}".format(args[0]))
+
+
+def outputItemDesc(itemName, loadedJson):
+    item = findJsonEntry(itemName, loadedJson)
+
+    readableItem = getItemDesc(item)
+    for i in readableItem: #TODO: Make the ui prettier
+        # If the value was not set
+        if not readableItem[i]:
+            continue
+        print(prettifyString(i) + ": " + prettifyString(readableItem[i]))
 
 
 # Removes any extra information, handles missing information,

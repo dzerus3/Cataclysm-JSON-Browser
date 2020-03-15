@@ -168,7 +168,7 @@ def findItem(args, loadedJson):
             pass
         elif args[0] == "craft":
             pass
-        elif args[0] == "disassembly"
+        elif args[0] == "disassembly":
             pass
         else:
             print("Cannot find item's {0}".format(args[0]))

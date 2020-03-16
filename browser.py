@@ -168,7 +168,7 @@ def findItem(args, loadedJson):
 
 
 def outputItemDesc(itemName, loadedJson):
-    item = findItemEntry(itemName, loadedJson)
+    item = findItemByName(itemName, loadedJson)
 
     readableItem = getItemDesc(item)
     for i in readableItem: #TODO: Make the ui prettier
@@ -179,18 +179,19 @@ def outputItemDesc(itemName, loadedJson):
 
 
 # I really cannot find a way to print efficiently hundreds of recipes in a terminal
-# TODO: As of right now, this does not output all crafting recipes
+# URGENT TODO: As of right now, this does not output all crafting recipes
+# I think it is because a.) Multi-word items and b.) replaceable components
 def outputCraftingRecipes(itemName, loadedJson):
     recipes = findRecipeEntries(itemName, loadedJson)
     counter = 1
 
     # Items with more than 25 recipes (i.e. rag) become almost unreadable
-    # This conditional tries to alleviate that 
+    # This conditional tries to alleviate that
     # TODO: Make this prettier
     recipLen = len(recipes)
     if recipLen > 25:
         for r in recipes:
-            item = findItemByID(r["result"], loadedJson) 
+            item = findItemByID(r["result"], loadedJson)
 
             if item == None:
                 # TODO: Investigate results of rock item
@@ -201,20 +202,20 @@ def outputCraftingRecipes(itemName, loadedJson):
             name = setStringLength(name)
 
             counterStr = setStringLength(str(counter), 3) # TODO: Make this line work
-            
+
             print(str(counter) + ". " + prettifyString(name))
             counter+=1
     else:
         for r in recipes:
             item = findItemByID(r["result"], loadedJson)
-            
+
             if item == None:
                 continue
 
             name = getItemName(item)
             print(str(counter) + ". " + prettifyString(name))
             counter+=1
-    
+
 
 
 # This json reading thing sure is something
@@ -249,15 +250,13 @@ def getItemDesc(item):
     return values
 
 
-def findItemEntry(name, loadedJson):
+def findItemByName(name, loadedJson):
     name = name.lower()
     for i in loadedJson["items"]:
         for sub in i:
             subName = getItemName(sub)
             if subName == name:
                 return sub
-
-    print("Could not find item {0}".format(name))
 
 
 def findItemByID(iden, loadedJson):
@@ -288,7 +287,7 @@ def getItemName(item):
                 itemname = item["name"]["str"]
     except AttributeError:
         pass
-    
+
     return itemname
 
 

@@ -267,7 +267,6 @@ def findItemByName(name, loadedJson):
 def findItemByID(iden, loadedJson):
     iden = iden.lower()
     for i in loadedJson["items"]:
-
         for sub in i:
             if sub.get("id"):
                 subName = sub["id"]

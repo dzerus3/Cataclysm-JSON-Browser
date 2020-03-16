@@ -183,6 +183,8 @@ def outputItemDesc(itemName, loadedJson):
 # I think it is because a.) Multi-word items and b.) replaceable components
 def outputCraftingRecipes(itemName, loadedJson):
     item = findItemByName(itemName, loadedJson)
+    if not item:
+        return
     recipes = findRecipeEntries(item["id"], loadedJson)
     counter = 1
 
@@ -256,6 +258,8 @@ def findItemByName(name, loadedJson):
     for i in loadedJson["items"]:
         for sub in i:
             subName = getItemName(sub)
+            if sub.get("type") == "ammunition_type":
+                continue
             if subName == name:
                 return sub
 
@@ -263,11 +267,13 @@ def findItemByName(name, loadedJson):
 def findItemByID(iden, loadedJson):
     iden = iden.lower()
     for i in loadedJson["items"]:
+
         for sub in i:
-            try:
+            if sub.get("id"):
                 subName = sub["id"]
-            except KeyError:
+            else:
                 continue
+
             if subName == iden:
                 return sub
 

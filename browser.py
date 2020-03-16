@@ -182,7 +182,8 @@ def outputItemDesc(itemName, loadedJson):
 # URGENT TODO: As of right now, this does not output all crafting recipes
 # I think it is because a.) Multi-word items and b.) replaceable components
 def outputCraftingRecipes(itemName, loadedJson):
-    recipes = findRecipeEntries(itemName, loadedJson)
+    item = findItemByName(itemName, loadedJson)
+    recipes = findRecipeEntries(item["id"], loadedJson)
     counter = 1
 
     # Items with more than 25 recipes (i.e. rag) become almost unreadable
@@ -222,7 +223,7 @@ def outputCraftingRecipes(itemName, loadedJson):
 # the name of the component is stored in a dictionary (json categories)
 # of lists (json files) of dictionaries (the json itself) of lists of lists
 # (the components) of lists (the number of components and name)
-def findRecipeEntries(itemName, loadedJson):
+def findRecipeEntries(itemId, loadedJson):
     matchingRecipes = []
 
     for recipes in loadedJson["recipes"]:
@@ -230,7 +231,7 @@ def findRecipeEntries(itemName, loadedJson):
             if recipe.get("components"):
                 for components in recipe["components"]:
                     componentName = components[0][0]
-                    if componentName == itemName:
+                    if componentName == itemId:
                         matchingRecipes.append(recipe)
     return matchingRecipes
 

@@ -74,7 +74,8 @@ def loadJson(jsonDir):
     return loadedJson
 
 
-def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
+def loadJsonFiles(jsonDir, jsonFile="", subDir=""):
+    f="" # This is for error handling
     # If neither is specified or both are specified that's an error
     if jsonFile == subDir:
         raise TypeError("loadJsonFiles called with wrong number of args")
@@ -97,11 +98,7 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
 
     # In the improbable event one of the files is missing, or wrong directory got through the checks
     except FileNotFoundError:
-        if jsonFile:
-            print("Failed to open file {0}.".format(jsonFile))
-            raise FileNotFoundError
-        else:
-            print("Failed to open file {0}.".format(f))
+            print("Failed to open file {0}{1}.".format(jsonFile, f))
             raise FileNotFoundError
 
     return result
@@ -139,6 +136,10 @@ def findItem(args, loadedJson):
         # Required to make multi-word names work
         itemName = ' '.join(args[1:])
         item = findItemByName(itemName, loadedJson)
+
+        if not item:
+            print("Could not find item {0}.".format(itemName))
+            return
 
         if args[0] == "description":
             outputItemDesc(item, loadedJson)

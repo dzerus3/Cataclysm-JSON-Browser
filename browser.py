@@ -64,6 +64,7 @@ def loadJson(jsonDir):
     loadedJson["vehicles"] = loadJsonFiles(jsonDir, subDir="vehicles")
     loadedJson["recipes"]  = loadJsonFiles(jsonDir, subDir="recipes")
     loadedJson["parts"]    = loadJsonFiles(jsonDir, subDir="vehicleparts")
+    loadedJson["disassembly"]    = loadJsonFiles(jsonDir, subDir="uncraft")
 
     loadedJson["bionics"]  = loadJsonFiles(jsonDir, jsonFile="bionics.json")
     loadedJson["materials"]= loadJsonFiles(jsonDir, jsonFile="materials.json")
@@ -225,7 +226,7 @@ def findRecipeEntries(itemId, loadedJson):
 def getJsonDesc(item):
     values = {}
     # All the values we do not want to see
-    ignoredValues = ["id", "color", "type", "//", "//2", 
+    ignoredValues = ["id", "color", "type", "//", "//2",
         "use_action", "category", "subcategory", "id_suffix",
         "result"] # TODO Add option to display these; probably with arguments
     # Material is separate value because we have to get stuff from another file
@@ -286,13 +287,13 @@ def getItemName(item):
 def findItemRecipes(item, loadedJson):
     itemID = item["id"]
     matchingRecipes = []
-    
+
     for recipes in loadedJson["recipes"]:
         for recipe in recipes:
             result = recipe.get("result")
             if result == itemID:
                 matchingRecipes.append(recipe)
-    
+
     for i in matchingRecipes:
         values = getJsonDesc(i)
         for i in values:

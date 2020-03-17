@@ -153,7 +153,7 @@ def findItem(args, loadedJson):
 
 
 def outputItemDesc(item, loadedJson):
-    readableItem = getItemDesc(item)
+    readableItem = getJsonDesc(item)
 
     for i in readableItem: #TODO: Make the ui prettier
         # If the value was not set
@@ -221,10 +221,12 @@ def findRecipeEntries(itemId, loadedJson):
 
 # Removes any extra information, handles missing information,
 # and returns it in a dictionary
-def getItemDesc(item):
+def getJsonDesc(item):
     values = {}
     # All the values we do not want to see
-    ignoredValues = ["id", "color", "type", "//", "//2", "use_action"] # TODO Add option to display these; probably with arguments
+    ignoredValues = ["id", "color", "type", "//", "//2", 
+        "use_action", "category", "subcategory", "id_suffix",
+        "result"] # TODO Add option to display these; probably with arguments
     # Material is separate value because we have to get stuff from another file
     # itemMat = item["material"] # TODO
 
@@ -291,8 +293,10 @@ def findItemRecipes(item, loadedJson):
                 matchingRecipes.append(recipe)
     
     for i in matchingRecipes:
-        print(i)
-
+        values = getJsonDesc(i)
+        for i in values:
+            print(prettifyString(i + ": " + values[i]))
+        print("-----------------")
 
 
 ### PRETTY-PRINTING FUNCTIONS

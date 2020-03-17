@@ -65,4 +65,4 @@ I really don't deserve it.
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
-- **[MIT license](http://opensource.org/licenses/mit-license.php)**
+**This project is registered under the [MIT license](http://opensource.org/licenses/mit-license.php)**

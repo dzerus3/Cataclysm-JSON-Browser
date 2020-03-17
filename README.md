@@ -20,12 +20,12 @@ This program has been created as an offline alternative for the [item browser](h
 ## Currently implemented
 - Basic text-based interface
 - Abbreviations for text-based commands
+- Looking for crafting recipes, disassembly, etc.
 - Looking for item information
 
 ---
 
 ## Planned features
-- Looking for crafting recipes, disassembly, etc.
 - Graphical User Interface
 - Overhaul of text-based interface
 - Things in item browser: construction, vehicle parts

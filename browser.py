@@ -202,7 +202,6 @@ def outputCraftingRecipes(itemName, loadedJson):
             counter+=1
 
 
-
 # This json reading thing sure is something
 # the name of the component is stored in a dictionary (json categories)
 # of lists (json files) of dictionaries (the json itself) of lists of lists
@@ -280,6 +279,11 @@ def getItemName(item):
         pass
 
     return itemname
+
+
+def findItemRecipes(name, loadedJson):
+    item = findItemByName(name, loadedJson)
+
 
 
 ### PRETTY-PRINTING FUNCTIONS

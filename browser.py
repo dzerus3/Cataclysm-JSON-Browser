@@ -98,11 +98,11 @@ def loadJsonFiles(jsonDir, jsonFile=0, subDir=0):
     # In the improbable event one of the files is missing, or wrong directory got through the checks
     except FileNotFoundError:
         if jsonFile:
-            print("Failed to open file {0}. Some commands may be unavailable.".format(jsonFile))
-            print("Are you sure " + jsonDir + jsonFile + " is the right location?")
+            print("Failed to open file {0}.".format(jsonFile))
+            raise FileNotFoundError
         else:
-            print("Failed to open file {0}. Some commands may be unavailable.".format(f))
-            print("Are you sure " + jsonDir + f + " is the right location?")
+            print("Failed to open file {0}.".format(f))
+            raise FileNotFoundError
 
     return result
 

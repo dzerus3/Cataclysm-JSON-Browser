@@ -9,7 +9,7 @@ This program has been created as an offline alternative for the [item browser](h
 - You do not have access to the internet for extended periods of time
 - You do not want to start up a browser just for this
 - You prefer a text only interface for one reason or another
-- You want information on something that is not an item (i.e. mutations)
+- You want information about something that is not an item (i.e. mutations)
 - You want to see edits that are not part of the official release
 - You want save the information for later use
 - The item browser is handing out server errors instead of information

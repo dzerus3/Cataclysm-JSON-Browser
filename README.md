@@ -15,7 +15,6 @@ This program has been created as an offline alternative for the [item browser](h
 - The item browser is handing out server errors instead of information
 - And so on
 
----
 
 ## Currently implemented
 - Basic text-based interface
@@ -23,7 +22,6 @@ This program has been created as an offline alternative for the [item browser](h
 - Looking for crafting recipes, disassembly, etc.
 - Looking for item information
 
----
 
 ## Planned features
 - Graphical User Interface
@@ -33,7 +31,6 @@ This program has been created as an offline alternative for the [item browser](h
 - Saving output in text format, for easy retrieval
 - Proper configuration
 
----
 
 ## A few examples
 
@@ -53,13 +50,11 @@ To find the effects of the fleet footed mutation:
 
 `> mutation fleet footed`
 
----
 
 ## Donations
 
 I really don't deserve it.
 
----
 
 ## License
 

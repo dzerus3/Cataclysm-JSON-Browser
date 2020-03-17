@@ -232,9 +232,10 @@ def findRecipeEntries(itemId, loadedJson):
         for recipe in recipes:
             if recipe.get("components"):
                 for components in recipe["components"]:
-                    componentName = components[0][0]
-                    if componentName == itemId:
-                        matchingRecipes.append(recipe)
+                    for replacements in components:
+                        componentName = replacements[0]
+                        if componentName == itemId:
+                            matchingRecipes.append(recipe)
     return matchingRecipes
 
 

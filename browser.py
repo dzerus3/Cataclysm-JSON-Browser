@@ -138,11 +138,12 @@ def findItem(args, loadedJson):
     if not checkArgsNumber(args, 2):
         # Required to make multi-word names work
         itemName = ' '.join(args[1:])
+        item = findItemByName(itemName, loadedJson)
 
         if args[0] == "description":
-            outputItemDesc(itemName, loadedJson)
+            outputItemDesc(item, loadedJson)
         elif args[0] == "recipes":
-            outputCraftingRecipes(itemName, loadedJson)
+            outputCraftingRecipes(item, loadedJson)
         elif args[0] == "craft":
             pass
         elif args[0] == "disassembly":
@@ -151,10 +152,9 @@ def findItem(args, loadedJson):
             print("Cannot find item's {0}".format(args[0]))
 
 
-def outputItemDesc(itemName, loadedJson):
-    item = findItemByName(itemName, loadedJson)
-
+def outputItemDesc(item, loadedJson):
     readableItem = getItemDesc(item)
+
     for i in readableItem: #TODO: Make the ui prettier
         # If the value was not set
         if not readableItem[i]:
@@ -163,8 +163,7 @@ def outputItemDesc(itemName, loadedJson):
 
 
 # I really cannot find a way to print efficiently hundreds of recipes in a terminal
-def outputCraftingRecipes(itemName, loadedJson):
-    item = findItemByName(itemName, loadedJson)
+def outputCraftingRecipes(item, loadedJson):
     if not item:
         return
     recipes = findRecipeEntries(item["id"], loadedJson)

@@ -296,7 +296,8 @@ def findItemRecipes(item, loadedJson):
     for i in matchingRecipes:
         values = getJsonDesc(i)
         for i in values:
-            print(prettifyString(i + ": " + values[i]))
+            fullString = i + ": " + str(values[i])
+            print(prettifyString(fullString))
         print("-----------------")
 
 
@@ -304,6 +305,15 @@ def findItemRecipes(item, loadedJson):
 def prettifyString(string):
     string = string.capitalize()
     string = string.replace("_", " ")
+    string = string.replace("],", " ")
+    string = string.replace("},", " ")
+    string = string.replace("[", "")
+    string = string.replace("{", "")
+    string = string.replace("]", "")
+    string = string.replace("}", "")
+    string = string.replace("'", "")
+    string = string.replace(",", ":")
+
     return string
 
 

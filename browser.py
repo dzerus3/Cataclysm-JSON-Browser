@@ -56,22 +56,6 @@ def checkDirValidity(directory):
         return 0
 
 
-def printVersion():
-    print("Version: {0}".format(version))
-
-
-def getWelcome():
-    return "Welcome to Dellon's CDDA json browser!"
-
-
-def interpretCommand(command):
-    fullCommand = command.split()
-    cmd = expandAbbreviation(fullCommand[0])
-    args = fullCommand[1:]
-
-    return commands[cmd], args
-
-
 def loadJson(jsonDir):
     loadedJson = {}
 
@@ -179,8 +163,6 @@ def outputItemDesc(itemName, loadedJson):
 
 
 # I really cannot find a way to print efficiently hundreds of recipes in a terminal
-# URGENT TODO: As of right now, this does not output all crafting recipes
-# I think it is because a.) Multi-word items and b.) replaceable components
 def outputCraftingRecipes(itemName, loadedJson):
     item = findItemByName(itemName, loadedJson)
     if not item:
@@ -254,6 +236,7 @@ def getItemDesc(item):
     return values
 
 
+# Receives item name, return item's JSON entry
 def findItemByName(name, loadedJson):
     name = name.lower()
     for i in loadedJson["items"]:
@@ -265,6 +248,7 @@ def findItemByName(name, loadedJson):
                 return sub
 
 
+# Receives item id, return item's JSON entry
 def findItemByID(iden, loadedJson):
     iden = iden.lower()
     for i in loadedJson["items"]:
@@ -298,6 +282,7 @@ def getItemName(item):
     return itemname
 
 
+### PRETTY-PRINTING FUNCTIONS
 def prettifyString(string):
     string = string.capitalize()
     string = string.replace("_", " ")
@@ -329,6 +314,7 @@ def padString(string, length=20):
     return string
 
 
+### UTILITY FUNCTIONS
 def endPrompt(*argv):
     quit()
 
@@ -352,6 +338,22 @@ def checkArgsNumber(args, necessary):
         print("Not enough arguments for command.", end=' ')
         print("You need at least {0}".format(necessary))
         return 1
+
+
+def printVersion():
+    print("Version: {0}".format(version))
+
+
+def getWelcome():
+    return "Welcome to Dellon's CDDA json browser!"
+
+
+def interpretCommand(command):
+    fullCommand = command.split()
+    cmd = expandAbbreviation(fullCommand[0])
+    args = fullCommand[1:]
+
+    return commands[cmd], args
 
 
 commands = {

@@ -147,7 +147,7 @@ def findItem(args, loadedJson):
         elif args[0] == "recipes":
             outputCraftingRecipes(item, loadedJson)
         elif args[0] == "craft":
-            findItemRecipes(item, loadedJson)
+            outputItemRecipes(item, loadedJson)
         elif args[0] == "disassembly":
             pass
         else:
@@ -284,7 +284,7 @@ def getItemName(item):
     return itemname
 
 
-def findItemRecipes(item, loadedJson):
+def outputItemRecipes(item, loadedJson):
     itemID = item["id"]
     matchingRecipes = []
 

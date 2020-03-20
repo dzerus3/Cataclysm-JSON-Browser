@@ -2,7 +2,7 @@ import json
 import glob
 #import argparse TODO
 
-version = "0.0 - In developemnt"
+version = "0.1 - Alpha"
 
 def main():
     print(getWelcome())

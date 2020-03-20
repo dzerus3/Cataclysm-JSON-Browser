@@ -64,7 +64,6 @@ def loadJson(jsonDir):
     loadedJson["vehicles"] = loadJsonFiles(jsonDir, subDir="vehicles")
     loadedJson["recipes"]  = loadJsonFiles(jsonDir, subDir="recipes")
     loadedJson["parts"]    = loadJsonFiles(jsonDir, subDir="vehicleparts")
-    loadedJson["disassembly"]    = loadJsonFiles(jsonDir, subDir="uncraft")
 
     loadedJson["bionics"]  = loadJsonFiles(jsonDir, jsonFile="bionics.json")
     loadedJson["materials"]= loadJsonFiles(jsonDir, jsonFile="materials.json")

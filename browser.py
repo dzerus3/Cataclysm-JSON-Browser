@@ -135,18 +135,18 @@ def findItem(args, loadedJson):
     if not checkArgsNumber(args, 2):
         # Required to make multi-word names work
         itemName = ' '.join(args[1:])
-        item = findItemByName(itemName, loadedJson)
+        item = findJsonEntry(loadedJson["items"], ["name", "str"], itemName)
 
         if not item:
             print("Could not find item {0}.".format(itemName))
             return
 
         if args[0] == "description":
-            outputItemDesc(item, loadedJson)
+            outputItemDesc(item[0], loadedJson)
         elif args[0] == "recipes":
-            outputCraftingRecipes(item, loadedJson)
+            outputCraftingRecipes(item[0], loadedJson)
         elif args[0] == "craft":
-            outputItemRecipes(item, loadedJson)
+            outputItemRecipes(item[0], loadedJson)
         elif args[0] == "disassembly":
             pass
         else:
@@ -176,7 +176,7 @@ def outputCraftingRecipes(item, loadedJson):
     recipLen = len(recipes)
     if recipLen > 25:
         for r in recipes:
-            item = findItemByID(r["result"], loadedJson)
+            item = findJsonEntry(loadedJson["items"], ["id"], r["result"], [])[0]
 
             if item == None:
                 # TODO: Investigate results of rock item
@@ -192,7 +192,7 @@ def outputCraftingRecipes(item, loadedJson):
             counter+=1
     else:
         for r in recipes:
-            item = findItemByID(r["result"], loadedJson)
+            item = findJsonEntry(loadedJson["items"], ["id"], r["result"], [])[0]
 
             if item == None:
                 continue
@@ -261,6 +261,56 @@ def findItemByID(iden, loadedJson):
 
             if subName == iden:
                 return sub
+
+
+""" findJsonEntry - Recursive function to retrieve values from JSON
+                    Use this if you need to retrieve a JSON entry or
+                    a particular value from JSON entries.
+        Arguments:
+            objs  - The object which we will parse for info. Either string, dict, or list.
+            keys  - What key we are looking for. Is an array to accomodate nested dictionaries.
+            value - What value the key should be equal to. It is optional, and if not specified
+                    the function will return a list of all values corresponding to key in object.
+            top   - Indicates whether this is at the top or not. This is to prevent recursiveness
+                    from returning the function too early.
+            entries - A list of all the matching JSON entries in object. Note: despite the fact
+                      that it has a default value, you should still specify []. This is because
+                      otherwise the entries will remain saved from the last time the function was used
+        Returns:
+            If value is specified, returns a list of JSON entries that match the keys and value
+            If value is not specified, returns a list of all values corresponding to key
+"""
+def findJsonEntry(objs, keys, value="", entries = [], top=True):
+    objtype = str(type(objs))
+    # Only dicts will contain what we are looking for
+    # so only info from dicts gets returned by the function
+    if "dict" in objtype:
+        for obj in objs:
+            # Note that keys is an array because of nested 
+            # dictionaries (namely name) which would throw
+            # the function out of whack
+            if obj in keys:
+                j = findJsonEntry(objs[obj], keys, value, entries, False)
+                # Only appends it if it's from the JSON entry because
+                # otherwise nested dicts would get incorrectly returned
+                if not value:
+                    entries.append(j)
+                elif j and obj == keys[0]:
+                    entries.append(objs)
+                return j
+    elif "list" in objtype:
+        for obj in objs:
+            j = findJsonEntry(obj, keys, value, entries, False)
+            # If it returns not at top, it will only return one result
+            if j and not top:
+                return j
+    elif "str" in objtype:
+        if objs == value:
+            return objs
+    if top:
+        # Note that it returns a list, so if you're looking
+        # for only on value you have to use findJsonEntry[0]
+        return entries
 
 
 # I don't understand why, but some items have a name defined as name:str:<item name>

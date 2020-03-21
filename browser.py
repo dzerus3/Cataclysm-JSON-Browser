@@ -183,7 +183,8 @@ def outputCraftingRecipes(item, loadedJson):
                 # Without this conditional
                 continue
 
-            name = getItemName(item)
+            # name = getItemName(item)
+            name = findJsonEntry(item, ["name", "str"], entries = [])
             name = setStringLength(name)
 
             counterStr = setStringLength(str(counter), 3) # TODO: Make this line work
@@ -192,12 +193,12 @@ def outputCraftingRecipes(item, loadedJson):
             counter+=1
     else:
         for r in recipes:
-            item = findJsonEntry(loadedJson["items"], ["id"], r["result"], [])[0]
+            name = findJsonEntry(item, ["name", "str"], entries = [])
 
             if item == None:
                 continue
 
-            name = getItemName(item)
+            name = findJsonEntry(item, ["name", "str"], entries = [])
             print(str(counter) + ". " + prettifyString(name))
             counter+=1
 
@@ -305,7 +306,7 @@ def findJsonEntry(objs, keys, value="", entries = [], top=True):
             if j and not top:
                 return j
     elif "str" in objtype:
-        if objs == value:
+        if objs == value or not value:
             return objs
     if top:
         # Note that it returns a list, so if you're looking

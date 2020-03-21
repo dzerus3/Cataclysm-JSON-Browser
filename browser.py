@@ -135,7 +135,7 @@ def findItem(args, loadedJson):
     if not checkArgsNumber(args, 2):
         # Required to make multi-word names work
         itemName = ' '.join(args[1:])
-        item = findJsonEntry(loadedJson["items"], ["name", "str"], itemName)
+        item = findJsonEntry(loadedJson["items"], ["name", "str"], itemName, [])
 
         if not item:
             print("Could not find item {0}.".format(itemName))
@@ -183,7 +183,6 @@ def outputCraftingRecipes(item, loadedJson):
                 # Without this conditional
                 continue
 
-            # name = getItemName(item)
             name = findJsonEntry(item, ["name", "str"], entries = [])
             name = setStringLength(name)
 
@@ -193,6 +192,7 @@ def outputCraftingRecipes(item, loadedJson):
             counter+=1
     else:
         for r in recipes:
+            item = findJsonEntry(loadedJson["items"], ["id"], r["result"], [])[0]
             name = findJsonEntry(item, ["name", "str"], entries = [])
 
             if item == None:
@@ -236,32 +236,6 @@ def getJsonDesc(item):
         if i not in ignoredValues:
             values[i] = str(item[i])
     return values
-
-
-# Receives item name, return item's JSON entry
-def findItemByName(name, loadedJson):
-    name = name.lower()
-    for i in loadedJson["items"]:
-        for sub in i:
-            subName = getItemName(sub)
-            if sub.get("type") == "ammunition_type":
-                continue
-            if subName == name:
-                return sub
-
-
-# Receives item id, return item's JSON entry
-def findItemByID(iden, loadedJson):
-    iden = iden.lower()
-    for i in loadedJson["items"]:
-        for sub in i:
-            if sub.get("id"):
-                subName = sub["id"]
-            else:
-                continue
-
-            if subName == iden:
-                return sub
 
 
 """ findJsonEntry - Recursive function to retrieve values from JSON
@@ -312,26 +286,6 @@ def findJsonEntry(objs, keys, value="", entries = [], top=True):
         # Note that it returns a list, so if you're looking
         # for only on value you have to use findJsonEntry[0]
         return entries
-
-
-# I don't understand why, but some items have a name defined as name:str:<item name>
-# some have it defined as name:<item name> some only have an id,
-# and some have no id at all so I have to handle all cases and it's ugly
-def getItemName(item):
-    # Note: this definition has to be here, else some entries cause a crash
-    itemname = ""
-    try:
-        # If we have a name attribute...
-        if item.get("name"):
-            itemname = item["name"]
-
-            # If that name has an str attribute...
-            if itemname.get("str"):
-                itemname = item["name"]["str"]
-    except AttributeError:
-        pass
-
-    return itemname
 
 
 def outputItemRecipes(item, loadedJson):

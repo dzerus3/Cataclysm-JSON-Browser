@@ -61,6 +61,7 @@ def loadJson(jsonDir):
 
     # Items, vehicles, and vehicle parts loaded separately because they are across multiple files
     loadedJson["items"]    = loadJsonFiles(jsonDir, subDir="items")
+    loadedJson["monsters"]    = loadJsonFiles(jsonDir, subDir="monsters")
     loadedJson["vehicles"] = loadJsonFiles(jsonDir, subDir="vehicles")
     loadedJson["recipes"]  = loadJsonFiles(jsonDir, subDir="recipes")
     loadedJson["parts"]    = loadJsonFiles(jsonDir, subDir="vehicleparts")
@@ -119,7 +120,6 @@ def startPrompt(jsonDir):
         doAction(args, loadedJson)
 
 
-
 # Attempts to expand the abbreviation; if the abbreviation is not valid,
 # assumes command has been typed out in full and returns whatever was passed
 def expandAbbreviation(abbr):
@@ -129,8 +129,6 @@ def expandAbbreviation(abbr):
         return abbr
 
 
-# This category attempts to imitate the item browser as much as possible in
-# terms of ui
 def findItem(args, loadedJson):
     if not checkArgsNumber(args, 2):
         # Required to make multi-word names work
@@ -147,8 +145,6 @@ def findItem(args, loadedJson):
             outputCraftingRecipes(item[0], loadedJson)
         elif args[0] == "craft":
             outputItemRecipes(item[0], loadedJson)
-        elif args[0] == "disassembly":
-            pass
         else:
             print("Cannot find item's {0}".format(args[0]))
 
@@ -156,7 +152,7 @@ def findItem(args, loadedJson):
 def outputItemDesc(item, loadedJson):
     readableItem = getJsonDesc(item)
 
-    for i in readableItem: #TODO: Make the ui prettier
+    for i in readableItem:
         # If the value was not set
         if not readableItem[i]:
             continue
@@ -261,7 +257,7 @@ def findJsonEntry(objs, keys, value="", entries = [], top=True):
     # so only info from dicts gets returned by the function
     if "dict" in objtype:
         for obj in objs:
-            # Note that keys is an array because of nested 
+            # Note that keys is an array because of nested
             # dictionaries (namely name) which would throw
             # the function out of whack
             if obj in keys:
@@ -283,7 +279,7 @@ def findJsonEntry(objs, keys, value="", entries = [], top=True):
         if objs == value or not value:
             return objs
     if top:
-        # Note that it returns a list, so if you're looking
+        # Note that it always returns a list, so if you're looking
         # for only on value you have to use findJsonEntry[0]
         return entries
 

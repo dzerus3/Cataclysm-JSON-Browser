@@ -122,7 +122,7 @@ def startPrompt(jsonDir):
 
         try:
             doAction, args = interpretCommand(command)
-        except (NameError, KeyError):
+        except (NameError, KeyError, IndexError):
             incorrectCommand(command)
             continue
         doAction(args, loadedJson)

@@ -396,6 +396,7 @@ abbreviations = {
     "p" : "part",
     "b" : "bionic",
     "m" : "materials",
+    "mo": "monster",
     "ma": "martialart",
     "mu": "mutation",
     "c" : "construction",

@@ -150,7 +150,7 @@ def findItem(args, loadedJson):
 
 
 def outputItemDesc(item, loadedJson):
-    readableItem = getJsonDesc(item, "item")
+    readableItem = filterJson(item, "item")
 
     for i in readableItem:
         # If the value was not set
@@ -228,7 +228,7 @@ def outputItemRecipes(item, loadedJson):
                 matchingRecipes.append(recipe)
 
     for i in matchingRecipes:
-        values = getJsonDesc(i, "item")
+        values = filterJson(i, "item")
         for i in values:
             fullString = i + ": " + str(values[i])
             print(prettifyString(fullString))
@@ -237,8 +237,13 @@ def outputItemRecipes(item, loadedJson):
 
 def outputMonsters(args, loadedJson):
     monsterName = args[0]
-    monster = findJsonEntry(loadedJson["monsters"], ["name", "str"], monsterName, [])
+    monster = findJsonEntry(loadedJson["monsters"], ["name", "str"], monsterName, [])[0]
 
+    monster = filterJson(monster, "monster")
+
+    for i in monster:
+        printableString = str(i + ": " + monster[i])
+        print (prettifyString(printableString))
 
 
 ### PRETTY-PRINTING FUNCTIONS
@@ -337,7 +342,7 @@ def findJsonEntry(objs, keys, value="", entries = [], top=True):
 
 # Removes any extra information, handles missing information,
 # and returns it in a dictionary
-def getJsonDesc(entry, entryType):
+def filterJson(entry, entryType):
     # Buffer for the returned values
     values = {}
     # All the values we do not want to see
@@ -357,7 +362,7 @@ def getJsonDesc(entry, entryType):
     try:
         ignoredValues = unwantedValues[entryType]
     except KeyError:
-        print ("getJsonDesc() called with invalid entry type!")
+        print ("filterJson() called with invalid entry type!")
         raise
 
     for i in entry:
@@ -409,7 +414,8 @@ def interpretCommand(command):
 commands = {
     "help" : printHelpMessage,
     "quit" : endPrompt,
-    "item" : findItem
+    "item" : findItem,
+    "monster" : outputMonsters
 }
 abbreviations = {
     "i" : "item",

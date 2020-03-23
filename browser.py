@@ -136,8 +136,7 @@ def findItem(args, loadedJson):
         itemName = ' '.join(args[1:])
         item = findJsonEntry(loadedJson["items"], ["name", "str"], itemName, [])
 
-        if not item:
-            print("Could not find item {0}.".format(itemName))
+        if not checkEntry(item, itemName, "item"):
             return
 
         if args[0] == "description":
@@ -238,9 +237,12 @@ def outputItemRecipes(item, loadedJson):
 
 def outputMonsters(args, loadedJson):
     monsterName = args[0]
-    monster = findJsonEntry(loadedJson["monsters"], ["name", "str"], monsterName, [])[0]
+    monster = findJsonEntry(loadedJson["monsters"], ["name", "str"], monsterName, [])
 
-    monster = filterJson(monster, "monster")
+    if not checkEntry(monster, monsterName, "monster"):
+        return
+
+    monster = filterJson(monster[0], "monster")
 
     for i in monster:
         printableString = str(i + ": " + monster[i])
@@ -251,9 +253,12 @@ def outputMonsters(args, loadedJson):
 # outputItemDesc. Do I really need a separate function for all 3?
 def outputMutation(args, loadedJson):
     mutationName = args[0]
-    mutation = findJsonEntry(loadedJson["mutations"], ["name", "str"], mutationName, [])[0]
+    mutation = findJsonEntry(loadedJson["mutations"], ["name", "str"], mutationName, [])
 
-    mutation = filterJson(mutation, "mutation")
+    if not checkEntry(mutation, mutationName, "mutation"):
+        return
+
+    mutation = filterJson(mutation[0], "mutation")
 
     # Traits like stylish or glass jaw, for example
     # I think they are defined in the source\\
@@ -390,6 +395,13 @@ def filterJson(entry, entryType):
 ### GENERAL FUNCTIONS
 def endPrompt(*argv):
     quit()
+
+
+def checkEntry(entry, name, entryType):
+    if not entry:
+        print("Could not find {0} {1}.".format(entryType, name))
+        return None
+    return entry
 
 
 # Attempts to expand the abbreviation; if the abbreviation is not valid,

@@ -2,7 +2,7 @@ import json
 import glob
 #import argparse TODO
 
-version = "0.1 - Alpha"
+version = "0.0.2 - Alpha"
 
 
 ### STARTUP FUNCTIONS

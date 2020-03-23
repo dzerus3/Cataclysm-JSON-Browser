@@ -372,9 +372,18 @@ def filterJson(entry, entryType):
     return values
 
 
-### GENERAL FUNCTIONS (those not bound to any particular command)
+### GENERAL FUNCTIONS
 def endPrompt(*argv):
     quit()
+
+
+# Attempts to expand the abbreviation; if the abbreviation is not valid,
+# assumes command has been typed out in full and returns whatever was passed
+def expandAbbreviation(abbr):
+    try:
+        return abbreviations[abbr]
+    except KeyError:
+        return abbr
 
 
 def printHelpMessage(*argv):

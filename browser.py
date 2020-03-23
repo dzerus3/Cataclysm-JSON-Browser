@@ -247,6 +247,21 @@ def outputMonsters(args, loadedJson):
         print (prettifyString(printableString))
 
 
+# TODO: This function looks awfully similar to outputMonsters
+# outputItemDesc. Do I really need a separate function for all 3?
+def outputMutation(args, loadedJson):
+    mutationName = args[0]
+    mutation = findJsonEntry(loadedJson["mutations"], ["name", "str"], mutationName, [])[0]
+
+    mutation = filterJson(mutation, "mutation")
+
+    # Traits like stylish or glass jaw, for example
+    # I think they are defined in the source\\
+    for i in mutation:
+        printableString = str(i + ": " + mutation[i])
+        print (prettifyString(printableString))
+
+
 ### PRETTY-PRINTING FUNCTIONS
 
 def prettifyString(string):
@@ -348,12 +363,12 @@ def filterJson(entry, entryType):
     values = {}
     # All the values we do not want to see
     unwantedValues = {
-        "item" :  ["id", "color", "type", "//", "//2",
-                   "use_action", "category", "subcategory", "id_suffix",
-                   "result"],
-        "monster":["harvest", "revert_to_itype", "vision_day",
-                   "color", "weight", "default_faction", "id", "type", "//",
-                   "//2"]
+        "all":  ["id", "type", "//", "//2"],
+        "item": ["color", "use_action", "category", "subcategory",
+                 "id_suffix", "result"],
+        "monster": ["harvest", "revert_to_itype", "vision_day",
+                    "color", "weight", "default_faction"],
+        "mutation":["starting_trait", "valid"]
     }
     # TODO Add option to display these; probably with arguments
 
@@ -361,7 +376,7 @@ def filterJson(entry, entryType):
 
     # The values for this specific operation
     try:
-        ignoredValues = unwantedValues[entryType]
+        ignoredValues = unwantedValues["all"] + unwantedValues[entryType]
     except KeyError:
         print ("filterJson() called with invalid entry type!")
         raise
@@ -425,7 +440,8 @@ commands = {
     "help" : printHelpMessage,
     "quit" : endPrompt,
     "item" : findItem,
-    "monster" : outputMonsters
+    "monster" : outputMonsters,
+    "mutation": outputMutation
 }
 abbreviations = {
     "i" : "item",

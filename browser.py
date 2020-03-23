@@ -126,6 +126,7 @@ def startPrompt(jsonDir):
             incorrectCommand(command)
         doAction(args, loadedJson)
 
+
 ### FUNCTIONS FOR ITEM COMMAND
 
 def findItem(args, loadedJson):
@@ -149,7 +150,7 @@ def findItem(args, loadedJson):
 
 
 def outputItemDesc(item, loadedJson):
-    readableItem = getJsonDesc(item)
+    readableItem = getJsonDesc(item, "item")
 
     for i in readableItem:
         # If the value was not set
@@ -227,11 +228,17 @@ def outputItemRecipes(item, loadedJson):
                 matchingRecipes.append(recipe)
 
     for i in matchingRecipes:
-        values = getJsonDesc(i)
+        values = getJsonDesc(i, "item")
         for i in values:
             fullString = i + ": " + str(values[i])
             print(prettifyString(fullString))
         print("-----------------")
+
+
+def outputMonsters(args, loadedJson):
+    monsterName = args[0]
+    monster = findJsonEntry(loadedJson["monsters"], ["name", "str"], monsterName, [])
+
 
 
 ### PRETTY-PRINTING FUNCTIONS
@@ -330,22 +337,36 @@ def findJsonEntry(objs, keys, value="", entries = [], top=True):
 
 # Removes any extra information, handles missing information,
 # and returns it in a dictionary
-def getJsonDesc(item):
+def getJsonDesc(entry, entryType):
+    # Buffer for the returned values
     values = {}
     # All the values we do not want to see
-    ignoredValues = ["id", "color", "type", "//", "//2",
-        "use_action", "category", "subcategory", "id_suffix",
-        "result"] # TODO Add option to display these; probably with arguments
-    # Material is separate value because we have to get stuff from another file
-    # itemMat = item["material"] # TODO
+    unwantedValues = {
+        "item" :  ["id", "color", "type", "//", "//2",
+                   "use_action", "category", "subcategory", "id_suffix",
+                   "result"],
+        "monster":["harvest", "revert_to_itype", "vision_day",
+                   "color", "weight", "default_faction", "id", "type", "//",
+                   "//2"]
+    }
+    # TODO Add option to display these; probably with arguments
 
-    for i in item:
+    # itemMat = item["material"] # TODO: Add something to handle materials
+
+    # The values for this specific operation
+    try:
+        ignoredValues = unwantedValues[entryType]
+    except KeyError:
+        print ("getJsonDesc() called with invalid entry type!")
+        raise
+
+    for i in entry:
         if i not in ignoredValues:
-            values[i] = str(item[i])
+            values[i] = str(entry[i])
     return values
 
 
-### GENERAL FUNCTIONS (those notbound to any particular command)
+### GENERAL FUNCTIONS (those not bound to any particular command)
 def endPrompt(*argv):
     quit()
 

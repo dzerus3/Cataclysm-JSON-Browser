@@ -446,8 +446,6 @@ def interpretCommand(command):
     return commands[cmd], args
 
 
-
-
 commands = {
     "help" : printHelpMessage,
     "quit" : endPrompt,
@@ -475,6 +473,7 @@ commandHelp = { # TODO: Create a proper help system, with subcommands
     "vehicle/v": "Outputs selected value of a vehicle.",
     "part/p"   : "Outputs selected value of a vehicle part.",
     "bionic/b" : "Outputs the effect of a bionic.",
+    "monster/mo"    : "Outputs information on specified monster",
     "materials/m"   : "Outputs selected value of a material.",
     "martialart/ma" : "Outputs the effects of a martial art.",
     "mutation/mu"   : "Outputs the effects of a mutation.",

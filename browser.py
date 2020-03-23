@@ -4,6 +4,9 @@ import glob
 
 version = "0.1 - Alpha"
 
+
+### STARTUP FUNCTIONS
+
 def main():
     print(getWelcome())
     #jsonDir = readJsonDir()
@@ -43,6 +46,10 @@ def getJsonDir():
     # TODO: Write the directory down into the allocated file
 
     return directory
+
+
+def getWelcome():
+    return "Welcome to Dellon's CDDA json browser!"
 
 
 def checkDirValidity(directory):
@@ -119,15 +126,7 @@ def startPrompt(jsonDir):
             incorrectCommand(command)
         doAction(args, loadedJson)
 
-
-# Attempts to expand the abbreviation; if the abbreviation is not valid,
-# assumes command has been typed out in full and returns whatever was passed
-def expandAbbreviation(abbr):
-    try:
-        return abbreviations[abbr]
-    except KeyError:
-        return abbr
-
+### FUNCTIONS FOR ITEM COMMAND
 
 def findItem(args, loadedJson):
     if not checkArgsNumber(args, 2):
@@ -217,22 +216,67 @@ def findRecipeEntries(itemId, loadedJson):
     return matchingRecipes
 
 
-# Removes any extra information, handles missing information,
-# and returns it in a dictionary
-def getJsonDesc(item):
-    values = {}
-    # All the values we do not want to see
-    ignoredValues = ["id", "color", "type", "//", "//2",
-        "use_action", "category", "subcategory", "id_suffix",
-        "result"] # TODO Add option to display these; probably with arguments
-    # Material is separate value because we have to get stuff from another file
-    # itemMat = item["material"] # TODO
+def outputItemRecipes(item, loadedJson):
+    itemID = item["id"]
+    matchingRecipes = []
 
-    for i in item:
-        if i not in ignoredValues:
-            values[i] = str(item[i])
-    return values
+    for recipes in loadedJson["recipes"]:
+        for recipe in recipes:
+            result = recipe.get("result")
+            if result == itemID:
+                matchingRecipes.append(recipe)
 
+    for i in matchingRecipes:
+        values = getJsonDesc(i)
+        for i in values:
+            fullString = i + ": " + str(values[i])
+            print(prettifyString(fullString))
+        print("-----------------")
+
+
+### PRETTY-PRINTING FUNCTIONS
+
+def prettifyString(string):
+    string = string.capitalize()
+    string = string.replace("_", " ")
+    string = string.replace("],", " ")
+    string = string.replace("},", " ")
+    string = string.replace("[", "")
+    string = string.replace("{", "")
+    string = string.replace("]", "")
+    string = string.replace("}", "")
+    string = string.replace("'", "")
+    string = string.replace(",", ":")
+
+    return string
+
+
+def setStringLength(string, length=20):
+    changedString = shortenString(string, length)
+    changedString = padString(changedString, length)
+
+    return changedString
+
+
+def shortenString(string, length=20):
+    strlen = len(string)
+    if strlen > length:
+        string = string[:17]
+        string+="..."
+
+    return string
+
+
+# Pads string with spaces so it is easier to pretty-print
+def padString(string, length=20):
+    strlen = len(string)
+    if strlen < length:
+        padNum = length - len(string)
+        string += " " * padNum
+    return string
+
+
+### UTILITY FUNCTIONS
 
 """ findJsonEntry - Recursive function to retrieve values from JSON
                     Use this if you need to retrieve a JSON entry or
@@ -284,66 +328,24 @@ def findJsonEntry(objs, keys, value="", entries = [], top=True):
         return entries
 
 
-def outputItemRecipes(item, loadedJson):
-    itemID = item["id"]
-    matchingRecipes = []
+# Removes any extra information, handles missing information,
+# and returns it in a dictionary
+def getJsonDesc(item):
+    values = {}
+    # All the values we do not want to see
+    ignoredValues = ["id", "color", "type", "//", "//2",
+        "use_action", "category", "subcategory", "id_suffix",
+        "result"] # TODO Add option to display these; probably with arguments
+    # Material is separate value because we have to get stuff from another file
+    # itemMat = item["material"] # TODO
 
-    for recipes in loadedJson["recipes"]:
-        for recipe in recipes:
-            result = recipe.get("result")
-            if result == itemID:
-                matchingRecipes.append(recipe)
-
-    for i in matchingRecipes:
-        values = getJsonDesc(i)
-        for i in values:
-            fullString = i + ": " + str(values[i])
-            print(prettifyString(fullString))
-        print("-----------------")
-
-
-### PRETTY-PRINTING FUNCTIONS
-def prettifyString(string):
-    string = string.capitalize()
-    string = string.replace("_", " ")
-    string = string.replace("],", " ")
-    string = string.replace("},", " ")
-    string = string.replace("[", "")
-    string = string.replace("{", "")
-    string = string.replace("]", "")
-    string = string.replace("}", "")
-    string = string.replace("'", "")
-    string = string.replace(",", ":")
-
-    return string
+    for i in item:
+        if i not in ignoredValues:
+            values[i] = str(item[i])
+    return values
 
 
-def setStringLength(string, length=20):
-    changedString = shortenString(string, length)
-    changedString = padString(changedString, length)
-
-    return changedString
-
-
-def shortenString(string, length=20):
-    strlen = len(string)
-    if strlen > length:
-        string = string[:17]
-        string+="..."
-
-    return string
-
-
-# Pads string with spaces so it is easier to pretty-print
-def padString(string, length=20):
-    strlen = len(string)
-    if strlen < length:
-        padNum = length - len(string)
-        string += " " * padNum
-    return string
-
-
-### UTILITY FUNCTIONS
+### GENERAL FUNCTIONS (those notbound to any particular command)
 def endPrompt(*argv):
     quit()
 
@@ -373,16 +375,14 @@ def printVersion():
     print("Version: {0}".format(version))
 
 
-def getWelcome():
-    return "Welcome to Dellon's CDDA json browser!"
-
-
 def interpretCommand(command):
     fullCommand = command.split()
     cmd = expandAbbreviation(fullCommand[0])
     args = fullCommand[1:]
 
     return commands[cmd], args
+
+
 
 
 commands = {

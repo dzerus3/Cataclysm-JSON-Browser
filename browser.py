@@ -236,7 +236,7 @@ def outputItemRecipes(item, loadedJson):
 
 
 def outputMonsters(args, loadedJson):
-    monsterName = args[0]
+    monsterName = ' '.join(args)
     monster = findJsonEntry(loadedJson["monsters"], ["name", "str"], monsterName, [])
 
     if not checkEntry(monster, monsterName, "monster"):
@@ -252,7 +252,7 @@ def outputMonsters(args, loadedJson):
 # TODO: This function looks awfully similar to outputMonsters
 # outputItemDesc. Do I really need a separate function for all 3?
 def outputMutation(args, loadedJson):
-    mutationName = args[0]
+    mutationName = ' '.join(args)
     mutation = findJsonEntry(loadedJson["mutations"], ["name", "str"], mutationName, [])
 
     if not checkEntry(mutation, mutationName, "mutation"):
@@ -268,13 +268,13 @@ def outputMutation(args, loadedJson):
 
 
 def outputBionics(args, loadedJson):
-    bionicName = args[0]
+    bionicName = ' '.join(args)
     bionic = findJsonEntry(loadedJson["bionics"], ["name", "str"], bionicName, [])
 
     if not checkEntry(bionic, bionicName, "bionic"):
         return
 
-    monster = filterJson(bionic[0], "bionic")
+    bionic = filterJson(bionic[0], "bionic")
 
     for i in bionic:
         printableString = str(i + ": " + bionic[i])

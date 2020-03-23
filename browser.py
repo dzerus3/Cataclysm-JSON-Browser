@@ -260,10 +260,24 @@ def outputMutation(args, loadedJson):
 
     mutation = filterJson(mutation[0], "mutation")
 
-    # Traits like stylish or glass jaw, for example
-    # I think they are defined in the source\\
+    # Traits like stylish or glass jaw, for example have no
+    # effect in json. I think they are defined in the source
     for i in mutation:
         printableString = str(i + ": " + mutation[i])
+        print (prettifyString(printableString))
+
+
+def outputBionics(args, loadedJson):
+    bionicName = args[0]
+    bionic = findJsonEntry(loadedJson["bionics"], ["name", "str"], bionicName, [])
+
+    if not checkEntry(bionic, bionicName, "bionic"):
+        return
+
+    monster = filterJson(bionic[0], "bionic")
+
+    for i in bionic:
+        printableString = str(i + ": " + bionic[i])
         print (prettifyString(printableString))
 
 
@@ -373,7 +387,8 @@ def filterJson(entry, entryType):
                  "id_suffix", "result"],
         "monster": ["harvest", "revert_to_itype", "vision_day",
                     "color", "weight", "default_faction"],
-        "mutation":["starting_trait", "valid"]
+        "mutation":["starting_trait", "valid"],
+        "bionic"  :["flags", "fake_item", "time"]
     }
     # TODO Add option to display these; probably with arguments
 
@@ -451,7 +466,8 @@ commands = {
     "quit" : endPrompt,
     "item" : findItem,
     "monster" : outputMonsters,
-    "mutation": outputMutation
+    "mutation": outputMutation,
+    "bionic"  : outputBionics
 }
 abbreviations = {
     "i" : "item",

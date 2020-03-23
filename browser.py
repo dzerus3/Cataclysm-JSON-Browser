@@ -468,16 +468,16 @@ abbreviations = {
     "j" : "json",
     "q" : "quit"
 }
-commandHelp = {
+commandHelp = { # TODO: Create a proper help system, with subcommands
     "help"     : "  Prints out this help message.",
     "quit/q"   : "Exits the program.",
     "item/i"   : "Outputs selected value of an item.",
     "vehicle/v": "Outputs selected value of a vehicle.",
     "part/p"   : "Outputs selected value of a vehicle part.",
-    "bionic/b" : "Outputs selected value of a bionic.",
+    "bionic/b" : "Outputs the effect of a bionic.",
     "materials/m"   : "Outputs selected value of a material.",
-    "martialart/ma" : "Outputs selected value of a martial art.",
-    "mutation/mu"   : "Outputs selected value of a mutation.",
+    "martialart/ma" : "Outputs the effects of a martial art.",
+    "mutation/mu"   : "Outputs the effects of a mutation.",
     "construction/c": "Outputs selected value of a construction interaction.",
     "json/j"   : "Display the raw json value of all values with attribute equal to second attribute."
 }

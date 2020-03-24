@@ -311,6 +311,25 @@ def outputMartialArt(args, loadedJson):
         print (prettifyString(printableString))
 
 
+# Searches through all json files for the entry specified
+def outputJson(args, loadedJson):
+    # TODO Currently does not support nested dicts like str:name
+    key = args[0]
+    finalEntries = []
+
+    if len(args) > 2:
+        value = ' '.join(args[1:])
+    else:
+        value = ""
+
+    for f in loadedJson:
+        json = findJsonEntry(loadedJson[i], [key], value, [])
+        finalEntries.append(json)
+
+    for j in finalEntries:
+        print(j)
+
+
 ### PRETTY-PRINTING FUNCTIONS
 
 def prettifyString(string):

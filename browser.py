@@ -396,7 +396,7 @@ def findJsonEntry(objs, keys, value="", entries = [], top=True):
             if j and not top:
                 return j
     elif "str" in objtype:
-        if objs == value or not value:
+        if objs.lower() == value.lower() or not value:
             return objs
     if top:
         # Note that it always returns a list, so if you're looking

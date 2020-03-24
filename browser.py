@@ -244,11 +244,7 @@ def outputMonsters(args, loadedJson):
     if not checkEntry(monster, monsterName, "monster"):
         return
 
-    monster = filterJson(monster[0], "monster")
-
-    for i in monster:
-        printableString = str(i + ": " + monster[i])
-        print (prettifyString(printableString))
+    prettyPrint(monster[0], "monster")
 
 
 # TODO: This function looks awfully similar to outputMonsters
@@ -260,13 +256,10 @@ def outputMutation(args, loadedJson):
     if not checkEntry(mutation, mutationName, "mutation"):
         return
 
-    mutation = filterJson(mutation[0], "mutation")
+    prettyPrint(mutation[0], "mutation")
 
     # Traits like stylish or glass jaw, for example have no
     # effect in json. I think they are defined in the source
-    for i in mutation:
-        printableString = str(i + ": " + mutation[i])
-        print (prettifyString(printableString))
 
 
 def outputBionics(args, loadedJson):
@@ -276,11 +269,7 @@ def outputBionics(args, loadedJson):
     if not checkEntry(bionic, bionicName, "bionic"):
         return
 
-    bionic = filterJson(bionic[0], "bionic")
-
-    for i in bionic:
-        printableString = str(i + ": " + bionic[i])
-        print (prettifyString(printableString))
+    prettyPrint(bionic[0], "bionic")
 
 
 def outputMaterial(args, loadedJson):
@@ -290,11 +279,7 @@ def outputMaterial(args, loadedJson):
     if not checkEntry(material, materialName, "material"):
         return
 
-    material = filterJson(material[0], "material")
-
-    for i in material:
-        printableString = str(i + ": " + material[i])
-        print (prettifyString(printableString))
+    prettyPrint(material[0], "material")
 
 
 def outputMartialArt(args, loadedJson):
@@ -304,11 +289,7 @@ def outputMartialArt(args, loadedJson):
     if not checkEntry(martialArt, martialArtName, "martialArt"):
         return
 
-    martialArt = filterJson(martialArt[0], "martialArt")
-
-    for i in martialArt:
-        printableString = str(i + ": " + martialArt[i])
-        print (prettifyString(printableString))
+    prettyPrint(martialArt[0], "martialArt")
 
 
 # Searches through all json files for the entry specified
@@ -362,6 +343,14 @@ def shortenString(string, length=20):
         string+="..."
 
     return string
+
+
+def prettyPrint(output, kind):
+    output = filterJson(output, kind)
+
+    for i in output:
+        printableString = str(i + ": " + output[i])
+        print (prettifyString(printableString))
 
 
 # Pads string with spaces so it is easier to pretty-print

@@ -75,7 +75,7 @@ def loadJson(jsonDir):
 
     loadedJson["bionics"]  = loadJsonFiles(jsonDir, jsonFile="bionics.json")
     loadedJson["materials"]= loadJsonFiles(jsonDir, jsonFile="materials.json")
-    loadedJson["martialarts"]  = loadJsonFiles(jsonDir, jsonFile="martialarts.json")
+    loadedJson["martialArts"]  = loadJsonFiles(jsonDir, jsonFile="martialarts.json")
     loadedJson["mutations"]    = loadJsonFiles(jsonDir, jsonFile="mutations/mutations.json")
     loadedJson["construction"] = loadJsonFiles(jsonDir, jsonFile="construction.json")
 
@@ -281,12 +281,41 @@ def outputBionics(args, loadedJson):
         print (prettifyString(printableString))
 
 
+def outputMaterial(args, loadedJson):
+    materialName = ' '.join(args)
+    material = findJsonEntry(loadedJson["materials"], ["name", "str"], materialName, [])
+
+    if not checkEntry(material, materialName, "material"):
+        return
+
+    material = filterJson(material[0], "material")
+
+    for i in material:
+        printableString = str(i + ": " + material[i])
+        print (prettifyString(printableString))
+
+
+def outputMartialArt(args, loadedJson):
+    martialArtName = ' '.join(args)
+    martialArt = findJsonEntry(loadedJson["martialArts"], ["name", "str"], martialArtName, [])
+
+    if not checkEntry(martialArt, martialArtName, "martialArt"):
+        return
+
+    martialArt = filterJson(martialArt[0], "martialArt")
+
+    for i in martialArt:
+        printableString = str(i + ": " + martialArt[i])
+        print (prettifyString(printableString))
+
+
 ### PRETTY-PRINTING FUNCTIONS
 
 def prettifyString(string):
     string = string.capitalize()
     string = string.replace("_", " ")
     string = string.replace("],", " ")
+    string = string.replace("\",", " ")
     string = string.replace("},", " ")
     string = string.replace("[", "")
     string = string.replace("{", "")
@@ -388,7 +417,9 @@ def filterJson(entry, entryType):
         "monster": ["harvest", "revert_to_itype", "vision_day",
                     "color", "weight", "default_faction"],
         "mutation":["starting_trait", "valid"],
-        "bionic"  :["flags", "fake_item", "time"]
+        "bionic"  :["flags", "fake_item", "time"],
+        "martialArt":["initiate"],
+        "material": ["dmg_adj", "bash_dmg_verb", "cut_dmg_verb"]
     }
     # TODO Add option to display these; probably with arguments
 
@@ -467,14 +498,16 @@ commands = {
     "item" : findItem,
     "monster" : outputMonsters,
     "mutation": outputMutation,
-    "bionic"  : outputBionics
+    "bionic"  : outputBionics,
+    "martialart": outputMartialArt,
+    "material": outputMaterial
 }
 abbreviations = {
     "i" : "item",
     "v" : "vehicle",
     "p" : "part",
     "b" : "bionic",
-    "m" : "materials",
+    "m" : "material",
     "mo": "monster",
     "ma": "martialart",
     "mu": "mutation",
@@ -490,7 +523,7 @@ commandHelp = { # TODO: Create a proper help system, with subcommands
     "part/p"   : "Outputs selected value of a vehicle part.",
     "bionic/b" : "Outputs the effect of a bionic.",
     "monster/mo"    : "Outputs information on specified monster",
-    "materials/m"   : "Outputs selected value of a material.",
+    "material/m"   : "Outputs selected value of a material.",
     "martialart/ma" : "Outputs the effects of a martial art.",
     "mutation/mu"   : "Outputs the effects of a mutation.",
     "construction/c": "Outputs selected value of a construction interaction.",

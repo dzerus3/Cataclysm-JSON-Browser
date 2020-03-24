@@ -142,9 +142,9 @@ def findItem(args, loadedJson):
         if args[0] == "description":
             outputItemDesc(item[0], loadedJson)
         elif args[0] == "recipes":
-            outputCraftingRecipes(item[0], loadedJson)
-        elif args[0] == "craft":
             outputItemRecipes(item[0], loadedJson)
+        elif args[0] == "craft":
+            outputItemCrafting(item[0], loadedJson)
         else:
             print("Cannot find item's {0}".format(args[0]))
 
@@ -160,7 +160,7 @@ def outputItemDesc(item, loadedJson):
 
 
 # I really cannot find a way to print efficiently hundreds of recipes in a terminal
-def outputCraftingRecipes(item, loadedJson):
+def outputItemRecipes(item, loadedJson):
     if not item:
         return
     recipes = findRecipeEntries(item["id"], loadedJson)
@@ -172,14 +172,14 @@ def outputCraftingRecipes(item, loadedJson):
     recipLen = len(recipes)
     if recipLen > 25:
         for r in recipes:
-            item = findJsonEntry(loadedJson["items"], ["id"], r["result"], [])[0]
+            item = findJsonEntry(loadedJson["items"], ["id"], r["result"], [])
 
             if item == None:
                 # TODO: Investigate results of rock item
                 # Without this conditional
                 continue
 
-            name = findJsonEntry(item, ["name", "str"], entries = [])
+            name = findJsonEntry(item, ["name", "str"], entries = [])[0]
             name = setStringLength(name)
 
             counterStr = setStringLength(str(counter), 3) # TODO: Make this line work
@@ -189,7 +189,7 @@ def outputCraftingRecipes(item, loadedJson):
     else:
         for r in recipes:
             item = findJsonEntry(loadedJson["items"], ["id"], r["result"], [])[0]
-            name = findJsonEntry(item, ["name", "str"], entries = [])
+            name = findJsonEntry(item, ["name", "str"], entries = [])[0]
 
             if item == None:
                 continue
@@ -217,7 +217,7 @@ def findRecipeEntries(itemId, loadedJson):
     return matchingRecipes
 
 
-def outputItemRecipes(item, loadedJson):
+def outputItemCrafting(item, loadedJson):
     itemID = item["id"]
     matchingRecipes = []
 
@@ -298,13 +298,13 @@ def outputJson(args, loadedJson):
     key = args[0]
     finalEntries = []
 
-    if len(args) > 2:
+    if len(args) < 2:
         value = ' '.join(args[1:])
     else:
         value = ""
 
     for f in loadedJson:
-        json = findJsonEntry(loadedJson[i], [key], value, [])
+        json = findJsonEntry(loadedJson[f], [key], value, [])
         finalEntries.append(json)
 
     for j in finalEntries:
@@ -380,6 +380,7 @@ def padString(string, length=20):
         Returns:
             If value is specified, returns a list of JSON entries that match the keys and value
             If value is not specified, returns a list of all values corresponding to key
+        TODO: If given an entire json category with multiple files (i.e. loadedJson["items"]) it will only return one value per file right now
 """
 def findJsonEntry(objs, keys, value="", entries = [], top=True):
     objtype = str(type(objs))
@@ -424,12 +425,13 @@ def filterJson(entry, entryType):
         "all":  ["id", "type", "//", "//2"],
         "item": ["color", "use_action", "category", "subcategory",
                  "id_suffix", "result"],
-        "monster": ["harvest", "revert_to_itype", "vision_day",
-                    "color", "weight", "default_faction"],
-        "mutation":["starting_trait", "valid"],
-        "bionic"  :["flags", "fake_item", "time"],
+        "monster":   ["harvest", "revert_to_itype", "vision_day",
+                      "color", "weight", "default_faction"],
+        "mutation":  ["starting_trait", "valid"],
+        "bionic"  :  ["flags", "fake_item", "time"],
         "martialArt":["initiate"],
-        "material": ["dmg_adj", "bash_dmg_verb", "cut_dmg_verb"]
+        "material":  ["dmg_adj", "bash_dmg_verb", "cut_dmg_verb",
+                      "ident"]
     }
     # TODO Add option to display these; probably with arguments
 
@@ -510,7 +512,8 @@ commands = {
     "mutation": outputMutation,
     "bionic"  : outputBionics,
     "martialart": outputMartialArt,
-    "material": outputMaterial
+    "material": outputMaterial,
+    "json" : outputJson
 }
 abbreviations = {
     "i" : "item",
@@ -537,7 +540,7 @@ commandHelp = { # TODO: Create a proper help system, with subcommands
     "martialart/ma" : "Outputs the effects of a martial art.",
     "mutation/mu"   : "Outputs the effects of a mutation.",
     "construction/c": "Outputs selected value of a construction interaction.",
-    "json/j"   : "Display the raw json value of all values with attribute equal to second attribute."
+    "json/j"   : "Currently very bugged! Display the raw json value of all values with attribute equal to second attribute."
 }
 
 

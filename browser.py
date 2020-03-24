@@ -235,6 +235,8 @@ def outputItemRecipes(item, loadedJson):
         print("-----------------")
 
 
+### MISC COMMANDS
+
 def outputMonsters(args, loadedJson):
     monsterName = ' '.join(args)
     monster = findJsonEntry(loadedJson["monsters"], ["name", "str"], monsterName, [])

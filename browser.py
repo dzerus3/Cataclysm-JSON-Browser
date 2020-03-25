@@ -283,13 +283,18 @@ def outputMaterial(args, loadedJson):
 
 
 def outputMartialArt(args, loadedJson):
-    martialArtName = ' '.join(args)
+    operation = args[0]
+    martialArtName = ' '.join(args[1:])
     martialArt = findJsonEntry(loadedJson["martialArts"], ["name", "str"], martialArtName, [])
 
-    if not checkEntry(martialArt, martialArtName, "martialArt"):
-        return
+    if operation is "description":
+        if not checkEntry(martialArt, martialArtName, "martialArt"):
+            return
 
-    prettyPrint(martialArt[0], "martialArt")
+        prettyPrint(martialArt[0], "martialArt")
+    elif operation is "buffs":
+        pass
+        # getMartialBuffs(martialArt)
 
 
 # Searches through all json files for the entry specified

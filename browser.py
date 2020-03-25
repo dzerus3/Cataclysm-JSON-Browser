@@ -287,12 +287,12 @@ def outputMartialArt(args, loadedJson):
     martialArtName = ' '.join(args[1:])
     martialArt = findJsonEntry(loadedJson["martialArts"], ["name", "str"], martialArtName, [])
 
-    if operation is "description":
+    if operation == "overview":
         if not checkEntry(martialArt, martialArtName, "martialArt"):
             return
 
         prettyPrint(martialArt[0], "martialArt")
-    elif operation is "buffs":
+    elif operation == "buffs":
         pass
         # getMartialBuffs(martialArt)
     else:

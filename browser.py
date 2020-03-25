@@ -293,10 +293,22 @@ def outputMartialArt(args, loadedJson):
 
         prettyPrint(martialArt[0], "martialArt")
     elif operation == "buffs":
-        pass
-        # getMartialBuffs(martialArt)
+       printMartialBuffs(martialArt[0])
     else:
         print("Subcommand not found: {0}".format(operation))
+
+
+def printMartialBuffs(martialArt):
+    buffs = ["static_buffs", "onmiss_buffs",
+             "onmove_buffs", "ondodge_buffs",
+             "onhit_buffs",  "oncrit_buffs",
+             "onblock_buffs"]
+    for buff in buffs:
+        for entry in martialArt:
+            if entry == buff:
+                effect = martialArt[entry]
+                effectList = [effect] # This is a workaround so that it works with filterJson()
+                prettyPrint(effect, "all")
 
 
 # Searches through all json files for the entry specified

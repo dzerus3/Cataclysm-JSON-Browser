@@ -307,8 +307,8 @@ def printMartialBuffs(martialArt):
         for entry in martialArt:
             if entry == buff:
                 effect = martialArt[entry]
-                effectList = [effect] # This is a workaround so that it works with filterJson()
-                prettyPrint(effect, "all")
+                print("\n" + buff + "\n----------------")
+                prettyPrint(effect[0], "all")
 
 
 # Searches through all json files for the entry specified

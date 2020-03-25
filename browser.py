@@ -295,6 +295,8 @@ def outputMartialArt(args, loadedJson):
     elif operation is "buffs":
         pass
         # getMartialBuffs(martialArt)
+    else:
+        print("Subcommand not found: {0}".format(operation))
 
 
 # Searches through all json files for the entry specified

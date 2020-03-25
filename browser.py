@@ -429,7 +429,9 @@ def filterJson(entry, entryType):
                       "color", "weight", "default_faction"],
         "mutation":  ["starting_trait", "valid"],
         "bionic"  :  ["flags", "fake_item", "time"],
-        "martialArt":["initiate"],
+        "martialArt":["initiate", "static_buffs", "onmiss_buffs",
+                      "onmove_buffs", "ondodge_buffs", "onhit_buffs",
+                      "oncrit_buffs", "onblock_buffs"],
         "material":  ["dmg_adj", "bash_dmg_verb", "cut_dmg_verb",
                       "ident"]
     }

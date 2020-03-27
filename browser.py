@@ -494,9 +494,12 @@ def expandAbbreviation(abbr):
 
 def printHelpMessage(*argv):
     print("A list of commands:\n")
-    for e in commandHelp:
-        print("{0}:  {1}".format(e, commandHelp[e]))
-
+    for command in commandHelp:
+        for subcommand in commandHelp[command]:
+            if subcommand == "main":
+                print("{0}: {1}".format(command, commandHelp[command][subcommand]))
+            else:
+                print("\t {0}: {1}".format(subcommand, commandHelp[command][subcommand]))
 
 def incorrectCommand(command):
     a = command.split(" ")
@@ -549,19 +552,25 @@ abbreviations = {
     "j" : "json",
     "q" : "quit"
 }
-commandHelp = { # TODO: Create a proper help system, with subcommands
-    "help"     : "  Prints out this help message.",
-    "quit/q"   : "Exits the program.",
-    "item/i"   : "Outputs selected value of an item.",
-    "vehicle/v": "Outputs selected value of a vehicle.",
-    "part/p"   : "Outputs selected value of a vehicle part.",
-    "bionic/b" : "Outputs the effect of a bionic.",
-    "monster/mo"    : "Outputs information on specified monster",
-    "material/m"   : "Outputs selected value of a material.",
-    "martialart/ma" : "Outputs the effects of a martial art.",
-    "mutation/mu"   : "Outputs the effects of a mutation.",
-    "construction/c": "Outputs selected value of a construction interaction.",
-    "json/j"   : "Currently very bugged! Display the raw json value of all values with attribute equal to second attribute."
+commandHelp = {
+    "help"     : {"main": "Prints out this help message."},
+    "quit/q"   : {"main": "Exits the program."},
+    "item/i"   : {"main": "Outputs selected value of an item.",
+                  "description":"Prints out the properties of an item",
+                  "craft": "Outputs all recipes to craftor disassemble an item",
+                  "recipes": "Outputs all recipes using an item (warning: may be long)"},
+    "vehicle/v": {"main": "Outputs selected value of a vehicle."},
+    "part/p"   : {"main": "Outputs selected value of a vehicle part."},
+    "bionic/b" : {"main": "Outputs the effect of a bionic."},
+    "monster/mo": {"main": "Outputs information on specified monster"},
+    "material/m": {"main": "Outputs selected value of a material."},
+    "martialart/ma" : {"main": "Outputs the effects of a martial art.",
+                       "overview": "Prints a brief overview of the martial art",
+                       "buffs": "Prints all the buffs the martial art gives."},
+    "mutation/mu"   : {"main": "Outputs the effects of a mutation."},
+    "construction/c": {"main": "Outputs selected value of a construction interaction."},
+    "json/j"   : {"main": "Display raw json value of values with attribute equal to second attribute.",
+                  "WARNING": "Currently very bugged!"}
 }
 
 

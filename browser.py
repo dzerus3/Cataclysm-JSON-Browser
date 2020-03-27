@@ -1,6 +1,5 @@
 import json
 import glob
-#import argparse TODO
 
 version = "0.0.3 - Alpha"
 
@@ -42,8 +41,6 @@ def getJsonDir():
     if checkDirValidity(directory):
         print("This path appears to be wrong.")
         directory = getJsonDir()
-
-    # TODO: Write the directory down into the allocated file
 
     return directory
 

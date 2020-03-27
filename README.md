@@ -1,7 +1,7 @@
 # This project is still heavily WIP
 
 # Cataclysm JSON Browser
-
+## Version 0.0.5 - Alpha
 > A browser for common JSON info
 
 This program has been created as an offline alternative for the [item browser](https://cdda-trunk.chezzo.com). Although the item browser is great, there are a few reasons why it might not be for you.

@@ -308,6 +308,11 @@ def printMartialBuffs(martialArt):
                 prettyPrint(effect[0], "all")
 
 
+def getVehicleParts(loadedJson, args):
+    subcommand = args[0] #TODO: Break this line into a function
+    partName = = ' '.join(args[1:])
+
+
 # Searches through all json files for the entry specified
 def outputJson(args, loadedJson):
     # TODO Currently does not support nested dicts like str:name

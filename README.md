@@ -16,7 +16,7 @@ This program has been created as an offline alternative for the [item browser](h
 - And so on
 
 
-## Currently implemented
+## Currently implemented features
 - Basic text-based interface
 - Abbreviations for text-based commands
 - Looking for crafting recipes, disassembly, etc.

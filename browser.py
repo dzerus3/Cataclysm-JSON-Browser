@@ -280,19 +280,19 @@ def outputMaterial(args, loadedJson):
 
 
 def outputMartialArt(args, loadedJson):
-    operation = args[0]
+    subcommand = args[0]
     martialArtName = ' '.join(args[1:])
     martialArt = findJsonEntry(loadedJson["martialArts"], ["name", "str"], martialArtName, [])
 
-    if operation == "overview":
+    if subcommand == "overview":
         if not checkEntry(martialArt, martialArtName, "martialArt"):
             return
 
         prettyPrint(martialArt[0], "martialArt")
-    elif operation == "buffs":
+    elif subcommand == "buffs":
        printMartialBuffs(martialArt[0])
     else:
-        print("Subcommand not found: {0}".format(operation))
+        print("Subcommand not found: {0}".format(subcommand))
 
 
 def printMartialBuffs(martialArt):
@@ -309,8 +309,22 @@ def printMartialBuffs(martialArt):
 
 
 def getVehicleParts(loadedJson, args):
-    subcommand = args[0] #TODO: Break this line into a function
-    partName = = ' '.join(args[1:])
+    subcommand = args[0] #TODO: Break these lines into a function
+    partName = ' '.join(args[1:])
+
+    part = findJsonEntry(loadedJson["parts"], ["name", "str"], partName, [])
+
+    if subcommand == "overview":
+        if not checkEntry(part, partName, "part"):
+            return
+
+        prettyPrint(part[0], "part")
+
+    elif subcommand == "requirements":
+        getPartRequirements(part)
+
+    else:
+        print("Subcommand not found: {0}".format(subcommand))
 
 
 # Searches through all json files for the entry specified
@@ -454,7 +468,8 @@ def filterJson(entry, entryType):
                       "onmove_buffs", "ondodge_buffs", "onhit_buffs",
                       "oncrit_buffs", "onblock_buffs"],
         "material":  ["dmg_adj", "bash_dmg_verb", "cut_dmg_verb",
-                      "ident"]
+                      "ident"],
+        "part": ["item", "location", "requirements", "size"]
     }
     # TODO Add option to display these; probably with arguments
 

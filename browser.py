@@ -327,6 +327,12 @@ def getVehicleParts(loadedJson, args):
         print("Subcommand not found: {0}".format(subcommand))
 
 
+def gerPartRequirements(part):
+    for entry in part:
+        if entry == "requirements":
+            pass
+
+
 # Searches through all json files for the entry specified
 def outputJson(args, loadedJson):
     # TODO Currently does not support nested dicts like str:name

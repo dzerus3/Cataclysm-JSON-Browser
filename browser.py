@@ -120,7 +120,7 @@ def startPrompt(jsonDir):
         try:
             doAction, args = interpretCommand(command)
         except (NameError, KeyError, IndexError):
-            incorrectCommand(command)
+            invalidCommand(command)
             continue
         doAction(args, loadedJson)
 
@@ -130,20 +130,20 @@ def startPrompt(jsonDir):
 def findItem(args, loadedJson):
     if not checkArgsNumber(args, 2):
         # Required to make multi-word names work
-        itemName = ' '.join(args[1:])
+        command, itemName = separateArgs(args)
         item = findJsonEntry(loadedJson["items"], ["name", "str"], itemName, [])
 
         if not checkEntry(item, itemName, "item"):
             return
 
-        if args[0] == "description":
+        if command == "description":
             outputItemDesc(item[0], loadedJson)
-        elif args[0] == "recipes":
+        elif command == "recipes":
             outputItemRecipes(item[0], loadedJson)
-        elif args[0] == "craft":
+        elif command == "craft":
             outputItemCrafting(item[0], loadedJson)
         else:
-            print("Cannot find item's {0}".format(args[0]))
+            invalidCommand(command)
 
 
 def outputItemDesc(item, loadedJson):
@@ -235,7 +235,7 @@ def outputItemCrafting(item, loadedJson):
 ### MISC COMMANDS
 
 def outputMonsters(args, loadedJson):
-    monsterName = ' '.join(args)
+    monsterName = separateArgs(args, False)
     monster = findJsonEntry(loadedJson["monsters"], ["name", "str"], monsterName, [])
 
     if not checkEntry(monster, monsterName, "monster"):
@@ -247,7 +247,7 @@ def outputMonsters(args, loadedJson):
 # TODO: This function looks awfully similar to outputMonsters
 # outputItemDesc. Do I really need a separate function for all 3?
 def outputMutation(args, loadedJson):
-    mutationName = ' '.join(args)
+    mutationName = separateArgs(args, False)
     mutation = findJsonEntry(loadedJson["mutations"], ["name", "str"], mutationName, [])
 
     if not checkEntry(mutation, mutationName, "mutation"):
@@ -260,7 +260,7 @@ def outputMutation(args, loadedJson):
 
 
 def outputBionics(args, loadedJson):
-    bionicName = ' '.join(args)
+    bionicName = separateArgs(args, False)
     bionic = findJsonEntry(loadedJson["bionics"], ["name", "str"], bionicName, [])
 
     if not checkEntry(bionic, bionicName, "bionic"):
@@ -270,7 +270,7 @@ def outputBionics(args, loadedJson):
 
 
 def outputMaterial(args, loadedJson):
-    materialName = ' '.join(args)
+    materialName = separateArgs(args, False)
     material = findJsonEntry(loadedJson["materials"], ["name", "str"], materialName, [])
 
     if not checkEntry(material, materialName, "material"):
@@ -280,8 +280,7 @@ def outputMaterial(args, loadedJson):
 
 
 def outputMartialArt(args, loadedJson):
-    subcommand = args[0]
-    martialArtName = ' '.join(args[1:])
+    subcommand, martialArtName = separateArgs(args)
     martialArt = findJsonEntry(loadedJson["martialArts"], ["name", "str"], martialArtName, [])
 
     if subcommand == "overview":
@@ -309,8 +308,7 @@ def printMartialBuffs(martialArt):
 
 
 def getVehicleParts(loadedJson, args):
-    subcommand = args[0] #TODO: Break these lines into a function
-    partName = ' '.join(args[1:])
+    subcommand, partName = separateArgs(args)
 
     part = findJsonEntry(loadedJson["parts"], ["name", "str"], partName, [])
 
@@ -514,6 +512,19 @@ def expandAbbreviation(abbr):
     except KeyError:
         return abbr
 
+# Separates an array of args into first arg,
+# and space-separated string of the rest
+def separateArgs(args, cmd=True):
+    if args:
+        if cmd:
+            command = args[0]
+            name = " ".join(args[1:])
+            return command, name
+        else:
+            name = " ".join(args)
+            return name
+    return
+
 
 def printHelpMessage(*argv):
     print("A list of commands:\n")
@@ -524,9 +535,9 @@ def printHelpMessage(*argv):
             else:
                 print("\t {0}: {1}".format(subcommand, commandHelp[command][subcommand]))
 
-def incorrectCommand(command):
-    a = command.split(" ")
-    print("Command not found: {0}".format(a[0]))
+def invalidCommand(command):
+    # _, a = separateArgs(command)
+    print("Command not found: {0}".format(command))
 
 
 def checkArgsNumber(args, necessary):
@@ -544,9 +555,10 @@ def printVersion():
 
 
 def interpretCommand(command):
-    fullCommand = command.split()
-    cmd = expandAbbreviation(fullCommand[0])
-    args = fullCommand[1:]
+    args = separateArgs(command, False)
+    # fullCommand = command.split()
+    cmd = expandAbbreviation(cmd)
+    # args = fullCommand[1:]
 
     return commands[cmd], args
 

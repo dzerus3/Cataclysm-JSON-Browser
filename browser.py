@@ -8,9 +8,9 @@ version = "0.0.3 - Alpha"
 
 def main():
     print(getWelcome())
-    #jsonDir = readJsonDir()
+    jsonDir = readJsonDir()
 
-    jsonDir = "/home/sal/workspace/Cataclysm-DDA/data/json"
+    # jsonDir = "/home/sal/workspace/Cataclysm-DDA/data/json"
     # If no valid JSON dir has been found, set one
     if jsonDir == 1:
         jsonDir = getJsonDir()
@@ -20,7 +20,7 @@ def main():
 
 # Get the Json directory from file
 # Returns 1 on error, directory name on success
-""" This function does not work and I fail to understand why; hardcoding it
+""" This function does not work and I fail to understand why; hardcoding it"""
 def readJsonDir():
     # Creates the file if it does not exist already
     with open("jsondir.txt", "r") as jsonDirFile:
@@ -30,7 +30,7 @@ def readJsonDir():
             return 1
     print("Directory: " + directory)
     return directory
-"""
+
 
 # Run when the program is started for the first time, or whenever the JSON dir is not found
 def getJsonDir():
@@ -91,14 +91,14 @@ def loadJsonFiles(jsonDir, jsonFile="", subDir=""):
         # TODO: Rewrite this without conditionals, ie using a list
         # If the json is contained in a single file
         if jsonFile:
-            with open(jsonDir + "/" + jsonFile, "r") as openedJsonFile:
+            with open(jsonDir + "/" + jsonFile, "r", encoding="utf8") as openedJsonFile:
                 result.append(json.load(openedJsonFile))
 
         # If there is a subdirectory with more files (or even with more subdirectories)
         if subDir:
             jsonFiles = glob.glob(jsonDir + "/" + subDir + "/**/*.json", recursive=True)
             for f in jsonFiles:
-                with open(f, "r") as openedJsonFile:
+                with open(f, "r", encoding="utf8") as openedJsonFile:
                     result.append(json.load(openedJsonFile))
 
     # In the improbable event one of the files is missing, or wrong directory got through the checks
@@ -536,7 +536,6 @@ def printHelpMessage(*argv):
                 print("\t {0}: {1}".format(subcommand, commandHelp[command][subcommand]))
 
 def invalidCommand(command):
-    # _, a = separateArgs(command)
     print("Command not found: {0}".format(command))
 
 
@@ -555,10 +554,10 @@ def printVersion():
 
 
 def interpretCommand(command):
-    args = separateArgs(command, False)
-    # fullCommand = command.split()
+    command = command.split()
+    cmd = command[0]
+    args = command[1:]
     cmd = expandAbbreviation(cmd)
-    # args = fullCommand[1:]
 
     return commands[cmd], args
 

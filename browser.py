@@ -179,7 +179,7 @@ def outputItemRecipes(item, loadedJson):
             name = findJsonEntry(item, ["name", "str"], entries = [])[0]
             name = setStringLength(name)
 
-            counterStr = setStringLength(str(counter), 3) # TODO: Make this line work
+            # counterStr = setStringLength(str(counter), 3) # TODO: Make this line work
 
             print(str(counter) + ". " + prettifyString(name))
             counter+=1
@@ -325,7 +325,7 @@ def getVehicleParts(loadedJson, args):
         print("Subcommand not found: {0}".format(subcommand))
 
 
-def gerPartRequirements(part):
+def getPartRequirements(part):
     for entry in part:
         if entry == "requirements":
             pass
@@ -541,7 +541,7 @@ def invalidCommand(command):
 
 def checkArgsNumber(args, necessary):
     try:
-        a = args[necessary - 1]
+        args[necessary - 1]
         return 0
     except IndexError:
         print("Not enough arguments for command.", end=' ')

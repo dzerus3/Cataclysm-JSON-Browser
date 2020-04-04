@@ -536,7 +536,6 @@ def printHelpMessage(*argv):
                 print("\t {0}: {1}".format(subcommand, commandHelp[command][subcommand]))
 
 def invalidCommand(command):
-    # _, a = separateArgs(command)
     print("Command not found: {0}".format(command))
 
 
@@ -555,8 +554,9 @@ def printVersion():
 
 
 def interpretCommand(command):
-    args = separateArgs(command, False)
-    # fullCommand = command.split()
+    command = command.split()
+    cmd = command[0]
+    args = command[1:]
     cmd = expandAbbreviation(cmd)
     # args = fullCommand[1:]
 

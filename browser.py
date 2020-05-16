@@ -1,5 +1,6 @@
 import json
 import glob
+import os
 
 version = "0.0.3 - Alpha"
 
@@ -9,36 +10,40 @@ version = "0.0.3 - Alpha"
 def main():
     print(getWelcome())
     jsonDir = readJsonDir()
-
-    # jsonDir = "/home/sal/workspace/Cataclysm-DDA/data/json"
-    # If no valid JSON dir has been found, set one
-    if jsonDir == 1:
-        jsonDir = getJsonDir()
-
     startPrompt(jsonDir)
 
 
 # Get the Json directory from file
-# Returns 1 on error, directory name on success
-""" This function does not work and I fail to understand why; hardcoding it"""
 def readJsonDir():
-    # Creates the file if it does not exist already
-    with open("jsondir.txt", "r") as jsonDirFile:
-        directory = jsonDirFile.readline()
+    configfile = os.path.join(
+            os.environ.get('APPDATA') or
+            os.environ.get('XDG_CONFIG_HOME') or
+            os.path.join(os.environ['HOME'], '.config'),
+            'cdda_json_browser'
+    )
+    try:
+        with open(configfile, 'r') as configFile:
+            directory = configFile.readline()
 
-        if checkDirValidity(directory):
-            return 1
-    print("Directory: " + directory)
-    return directory
+            if not os.path.isdir(directory):
+                raise FileNotFoundError
+
+    except FileNotFoundError:
+        directory = getJsonDir()
+        with open(configfile, 'w') as configFile:
+            configFile.write(directory)
+
+    finally:
+        return directory
 
 
 # Run when the program is started for the first time, or whenever the JSON dir is not found
 def getJsonDir():
     print("Please enter the path to the game's JSON folder.")
-    directory = str(input())
+    directory = input()
 
     # Recursive call to itself until a valid location is specified
-    if checkDirValidity(directory):
+    if not os.path.isdir(directory):
         print("This path appears to be wrong.")
         directory = getJsonDir()
 
@@ -47,18 +52,6 @@ def getJsonDir():
 
 def getWelcome():
     return "Welcome to Dellon's CDDA json browser!"
-
-
-def checkDirValidity(directory):
-        # Checks whether the directory exists, and whether there are any .json files inside
-        try:
-            if glob.glob(directory + "/*.json") == []:
-                return 1
-        except:
-            return 1
-
-        return 0
-
 
 def loadJson(jsonDir):
     loadedJson = {}

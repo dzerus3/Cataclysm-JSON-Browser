@@ -1,25 +1,86 @@
-import json
 import glob
+import json
 import os
+
+# import jsonreader
 
 version = "0.0.3 - Alpha"
 
 
-### STARTUP FUNCTIONS
+class JsonReader:
+    def __init__(self, jsonDirectory):
+        self.jsonDir = jsonDirectory
+        self.loadedJson = self.loadJson()
+
+    # This function may be ugly, but I found no other way
+    # to separate JSON by its' type.
+    def loadJson(self):
+        loadedJson = {}
+        # Some loaded separately because they are across multiple files
+        loadedJson["items"] = self.loadJsonFiles(subDir="items")
+        loadedJson["monsters"] = self.loadJsonFiles(subDir="monsters")
+        loadedJson["vehicles"] = self.loadJsonFiles(subDir="vehicles")
+        loadedJson["recipes"] = self.loadJsonFiles(subDir="recipes")
+        loadedJson["parts"] = self.loadJsonFiles(subDir="vehicleparts")
+
+        loadedJson["bionics"] = self.loadJsonFiles(
+                jsonFile="bionics.json")
+        loadedJson["materials"] = self.loadJsonFiles(
+                jsonFile="materials.json")
+        loadedJson["martialArts"] = self.loadJsonFiles(
+                jsonFile="martialarts.json")
+        loadedJson["mutations"] = self.loadJsonFiles(
+                jsonFile="mutations/mutations.json")
+        loadedJson["construction"] = self.loadJsonFiles(
+                jsonFile="construction.json")
+        return loadedJson
+
+    def loadJsonFiles(self, jsonFile="", subDir=""):
+        # If neither is specified or both are specified that's an error
+        if jsonFile == subDir:
+            raise TypeError("self.loadJsonFiles used wrong number of args")
+
+        result = []
+
+        try:
+            # TODO: Rewrite this without conditionals, ie using a list
+            # If the json is contained in a single file
+            if jsonFile:
+                path = os.path.join(self.jsonDir, jsonFile)
+                with open(path, "r", encoding="utf8") as openedJsonFile:
+                    result.append(json.load(openedJsonFile))
+
+            # If there is a subdirectory with more files
+            elif subDir:
+                path = os.path.join(self.jsonDir, subDir, "**/*.json")
+                jsonFiles = glob.glob(path, recursive=True)
+                for f in jsonFiles:
+                    with open(f, "r", encoding="utf8") as openedJsonFile:
+                        result.append(json.load(openedJsonFile))
+
+        except FileNotFoundError as error:
+            print(f"Error opening {jsonFile}{subDir}: {error}")
+            raise FileNotFoundError
+
+        return result
+
+
+# STARTUP FUNCTIONS
 
 def main():
     print(getWelcome())
     jsonDir = readJsonDir()
-    startPrompt(jsonDir)
+    jsonReader = JsonReader(jsonDir)
+    startPrompt(JsonReader)
 
 
 # Get the Json directory from file
 def readJsonDir():
     configfile = os.path.join(
-            os.environ.get('APPDATA') or
-            os.environ.get('XDG_CONFIG_HOME') or
-            os.path.join(os.environ['HOME'], '.config'),
-            'cdda_json_browser'
+        os.environ.get('APPDATA') or
+        os.environ.get('XDG_CONFIG_HOME') or
+        os.path.join(os.environ['HOME'], '.config'),
+        'cdda_json_browser'
     )
     try:
         with open(configfile, 'r') as configFile:
@@ -37,7 +98,8 @@ def readJsonDir():
         return directory
 
 
-# Run when the program is started for the first time, or whenever the JSON dir is not found
+# Run when the program is started for the first time,
+# or whenever the JSON dir is not found
 def getJsonDir():
     print("Please enter the path to the game's JSON folder.")
     directory = input()
@@ -53,58 +115,9 @@ def getJsonDir():
 def getWelcome():
     return "Welcome to Dellon's CDDA json browser!"
 
-def loadJson(jsonDir):
-    loadedJson = {}
-
-    # Items, vehicles, and vehicle parts loaded separately because they are across multiple files
-    loadedJson["items"]    = loadJsonFiles(jsonDir, subDir="items")
-    loadedJson["monsters"]    = loadJsonFiles(jsonDir, subDir="monsters")
-    loadedJson["vehicles"] = loadJsonFiles(jsonDir, subDir="vehicles")
-    loadedJson["recipes"]  = loadJsonFiles(jsonDir, subDir="recipes")
-    loadedJson["parts"]    = loadJsonFiles(jsonDir, subDir="vehicleparts")
-
-    loadedJson["bionics"]  = loadJsonFiles(jsonDir, jsonFile="bionics.json")
-    loadedJson["materials"]= loadJsonFiles(jsonDir, jsonFile="materials.json")
-    loadedJson["martialArts"]  = loadJsonFiles(jsonDir, jsonFile="martialarts.json")
-    loadedJson["mutations"]    = loadJsonFiles(jsonDir, jsonFile="mutations/mutations.json")
-    loadedJson["construction"] = loadJsonFiles(jsonDir, jsonFile="construction.json")
-
-    return loadedJson
-
-
-def loadJsonFiles(jsonDir, jsonFile="", subDir=""):
-    f="" # This is for error handling
-    # If neither is specified or both are specified that's an error
-    if jsonFile == subDir:
-        raise TypeError("loadJsonFiles called with wrong number of args")
-
-    result = []
-
-    try:
-        # TODO: Rewrite this without conditionals, ie using a list
-        # If the json is contained in a single file
-        if jsonFile:
-            with open(jsonDir + "/" + jsonFile, "r", encoding="utf8") as openedJsonFile:
-                result.append(json.load(openedJsonFile))
-
-        # If there is a subdirectory with more files (or even with more subdirectories)
-        if subDir:
-            jsonFiles = glob.glob(jsonDir + "/" + subDir + "/**/*.json", recursive=True)
-            for f in jsonFiles:
-                with open(f, "r", encoding="utf8") as openedJsonFile:
-                    result.append(json.load(openedJsonFile))
-
-    # In the improbable event one of the files is missing, or wrong directory got through the checks
-    except FileNotFoundError:
-            print("Failed to open file {0}{1}.".format(jsonFile, f))
-            raise FileNotFoundError
-
-    return result
-
 
 # This is the command prompt the user interacts with
-def startPrompt(jsonDir):
-    loadedJson = loadJson(jsonDir)
+def startPrompt(loadedJson):
     print("What would you like to do? Type 'help' for some options. ")
 
     while True:

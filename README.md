@@ -1,4 +1,4 @@
-# This project is still heavily WIP
+# This project is being rewritten from scratch
 
 # Cataclysm JSON Browser
 ## Version 0.0.5 - Alpha

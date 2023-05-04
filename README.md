@@ -1,4 +1,4 @@
-# This project is being rewritten from scratch
+# This project has been abandoned. I'm keeping it around for historical purposes, but hey, it was a nice introduction to programming.
 
 # Cataclysm JSON Browser
 ## Version 0.0.5 - Alpha
